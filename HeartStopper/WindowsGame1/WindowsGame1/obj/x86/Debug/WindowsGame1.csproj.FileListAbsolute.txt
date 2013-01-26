@@ -1,0 +1,8 @@
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.exe
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.pdb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\XUI.dll
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\XUI.pdb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb
