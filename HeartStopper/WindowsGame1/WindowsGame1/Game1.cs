@@ -52,7 +52,9 @@ namespace WindowsGame1
             wW = new Werewolf(this, map.getWidth(), map.getheight());
             cam = new Camera(this, wW);
             temp = new DummyVision(this, 5, 5);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             base.Initialize();
+           
             
         }
 
@@ -62,8 +64,10 @@ namespace WindowsGame1
         /// </summary>
         protected override void LoadContent()
         {
+            base.LoadContent();
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+           
         }
 
         /// <summary>
@@ -104,8 +108,9 @@ namespace WindowsGame1
             spriteBatch.Begin();
             //map = new Map(this, 21, 11);
 
-            spriteBatch.End();
+          
             base.Draw(gameTime);
+            spriteBatch.End();
         }
     }
 }

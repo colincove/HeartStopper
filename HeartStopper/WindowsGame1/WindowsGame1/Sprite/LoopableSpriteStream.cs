@@ -10,7 +10,7 @@ namespace WindowsGame1.Animation
 /*
 Upon poping the source rectangle, the frame is incremented by SpriteStreamBase. A loopable sprite will reset the frame if it happens to reach the end of its animation.  
 */
-    class LoopableSpriteStream : SpriteStreamBase
+   public class LoopableSpriteStream : SpriteStreamBase
     {
 	//This class defines an object that can be looped, but this variable defines whether or not it is loopable or not. 
         protected Boolean doesLoop;
@@ -30,7 +30,7 @@ Upon poping the source rectangle, the frame is incremented by SpriteStreamBase. 
                  if (streamComplete && doesLoop)
                  {
                     
-                     _frame = 1;
+                     _frame = 0;
                  } 
                  Rectangle returnRect = base.popRect();
                  return returnRect;

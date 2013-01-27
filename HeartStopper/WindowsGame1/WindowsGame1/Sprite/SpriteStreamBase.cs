@@ -12,7 +12,7 @@ This class acts as the base for all streaming animations used in the Animation f
 Streaming objects provide Sprite objects will source rectangles. 
 Each type of streaming object will define how these source objects are provided. 
 */
-    class SpriteStreamBase
+    public class SpriteStreamBase
     {
 //the cirrent frame of the animation. Sub classes will use this number to calculate where to get its source Rectangle. 
         protected int _frame = 1;
