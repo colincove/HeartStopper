@@ -31,7 +31,7 @@ namespace HeartStopper
             : base(game)
         {
             // TODO: Construct any child components here
-
+            DrawOrder = 5; // Always draw this first.
             this.game = game;
             this.id = id;
             this.elevation = elevation;
