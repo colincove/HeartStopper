@@ -87,7 +87,7 @@ namespace WindowsGame1
 
             Game1.spriteBatch.Begin();
 
-            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE), Color.White);
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), Color.White);
 
             Game1.spriteBatch.End();
         }
