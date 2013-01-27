@@ -141,7 +141,7 @@ namespace WindowsGame1
                     break;
             }
 
-            tile = game.map.getTile(parent.x + game.cam.X + Game1.VIEWPORT_WIDTH/2, parent.y + game.cam.Y + Game1.VIEWPORT_HEIGHT/2);
+            tile = game.map.getTile(parent.x, parent.y);
             //Console.WriteLine(tile.X + " " + tile.Y);
             castVisionCone((int) tile.X, (int) tile.Y, dirLR, dirUD, VISION_RANGE, 1);
         }
