@@ -16,10 +16,14 @@ namespace HeartStopper
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Map : Microsoft.Xna.Framework.GameComponent
+    public class Map : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        public const int TILE_SIZE = 24; // pretzels
 
-        public Tile[,] grid;
+        //public Tile[,] grid;
+        public int[,] grid;
+        private Texture2D texture;
+        private Color[] colours;
         private int width;
         private int height;
         private Game1 game;
@@ -48,9 +52,11 @@ namespace HeartStopper
             spriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
 
             HeightMap hmap = new HeightMap(Game1.MAP_SIZE, 0);
+
+            
             
             // Init the map in a dumb way for now.
-            grid = new Tile[width, height];
+            grid = new int[width, height];
 
             /*
             int[,] elevationMap = new int[width, height];
@@ -120,18 +126,35 @@ namespace HeartStopper
                 {7,7,7,7,7,7,7,7,7,6,5,5,4,4,4,4,4,4,4,4,3,2,2,2,2,2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,5,5,4,4,4,4,3,3,4,4,4,4,4},
                 {7,7,7,7,7,7,7,7,7,7,6,5,5,4,4,4,4,4,4,3,3,2,2,2,2,2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,6,5,4,4,4,4,3,3,4,4,4,4,4}
             };
-             */
+            */
             
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
-                    grid[i, j] = new Tile(game, i, j, hmap.getHeight(i, j));
+                    //grid[i, j] = new Tile(game, i, j, hmap.getHeight(i, j));
+                    grid[i, j] = hmap.getHeight(i, j);
                 }
             }
 
             Console.WriteLine("map initialization complete.");
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+
+            texture = new Texture2D(game.GraphicsDevice, 1, 1);
+            texture.SetData(new[] { new Color(255,255,255) });
+            colours = new Color[HeightMap.MAX - HeightMap.MIN + 1];
+            for (int i = HeightMap.MIN; i <= HeightMap.MAX; i++)
+            {
+                float g = ((float)i / (float)HeightMap.MAX) * 255f;
+                colours[i - HeightMap.MIN] = new Color(0, (int)g, 0);
+            }
+
+            base.LoadContent();
+
         }
 
         /// <summary>
@@ -144,20 +167,42 @@ namespace HeartStopper
 
             base.Update(gameTime);
         }
+
+        public override void Draw(GameTime gameTime)
+        {
+
+            base.Draw(gameTime);
+
+            //Game1.spriteBatch.Begin();
+
+            int elevation;
+            for (int i = 0; i < this.width; i++) {
+                for (int j = 0; j < this.height; j++) {
+                    elevation = grid[i, j]; // index into colours[]
+                    Game1.spriteBatch.Draw(texture, new Rectangle(i * TILE_SIZE - (int)((Game1)Game).cam.X, j * TILE_SIZE - (int)((Game1)Game).cam.Y, TILE_SIZE, TILE_SIZE), colours[elevation - 1]);
+                }   
+            }
+            
+
+            //Game1.spriteBatch.End();
+        }
+
         public int getWidth()
         {
             return width;
         }
-        public int getheight()
+        public int getHeight()
         {
             return height;
         }
+        /*
         public Tile getTile(int x, int y)
         {
             if (x >= 0 && x < width && y >= 0 && y < height)
                 return grid[x, y];
             return null;
         }
+        */
     }
     
 

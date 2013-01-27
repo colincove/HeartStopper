@@ -29,7 +29,7 @@ namespace WindowsGame1
         public static int VIEWPORT_HEIGHT = 1080;
         public static int VIEWPORT_WIDTH = 1920;
 
-        public const int MAP_SIZE = 65; // must be 2^x + 1, where x is a positive integer
+        public const int MAP_SIZE = 257; // must be 2^x + 1, where x is a positive integer
 
         public Game1()
         {
@@ -52,7 +52,7 @@ namespace WindowsGame1
         {
             // TODO: Add your initialization logic here
             map = new Map(this, MAP_SIZE, MAP_SIZE);
-            wW = new Werewolf(this, map.getWidth(), map.getheight());
+            wW = new Werewolf(this, map.getWidth(), map.getHeight());
             cam = new Camera(this, wW);
             temp = new DummyVision(this, 5, 5);
             base.Initialize();

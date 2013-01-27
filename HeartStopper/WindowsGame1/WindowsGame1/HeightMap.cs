@@ -9,10 +9,10 @@ namespace WindowsGame1
 
     class HeightMap
     {
-        const int MAX = 10;
-        const int MIN = 3;
+        public const int MAX = 20;
+        public const int MIN = 1;
 
-        const float INIT_RAND = 6;
+        const float INIT_RAND = 40;
         const float DELTA_RAND = 0.7f; // how much randomness changes per step.
 
         private int[,] map;
@@ -41,10 +41,10 @@ namespace WindowsGame1
             }
 
             // Set four corner values.
-            map[0, 0] = rand.Next(MIN, MAX);
-            map[0, size-1] = rand.Next(MIN, MAX);
-            map[size-1, 0] = rand.Next(MIN, MAX);
-            map[size-1, size-1] = rand.Next(MIN, MAX);
+            map[0, 0] = rand.Next(MIN * 2, MAX);
+            map[0, size-1] = rand.Next(MIN * 2, MAX);
+            map[size-1, 0] = rand.Next(MIN * 2, MAX);
+            map[size-1, size-1] = rand.Next(MIN * 2, MAX);
 
             diamondSquare(0, 16);
         }
@@ -62,7 +62,12 @@ namespace WindowsGame1
                 for (int j = 0; j < size - 1; j += step)
                 {
                     sum = map[i, j] + map[i + step, j] + map[i, j + step] + map[i + step, j + step];
-                    map[i + (step / 2), j + (step / 2)] = (int)Math.Round((float)sum / 4 + rand.Next((int)-randomness, (int)randomness));
+                    int ele = (int)Math.Round((float)sum / 4 + rand.Next((int)-randomness, (int)randomness));
+                    if (ele > MAX)
+                        ele = MAX;
+                    if (ele < MIN)
+                        ele = MIN;
+                    map[i + (step / 2), j + (step / 2)] = ele;
                 }
             }
 
@@ -132,9 +137,12 @@ namespace WindowsGame1
                 count++;
             }
 
-            if (j + (step / 2) < size)
-                return (int)Math.Round((float)sum / count + rand.Next((int)-randomness, (int)randomness));
-            return -1;
+            int ele = (int)Math.Round((float)sum / count + rand.Next((int)-randomness, (int)randomness));
+            if (ele > MAX)
+                ele = MAX;
+            if (ele < MIN)
+                ele = MIN;
+            return ele;
         }
 
         private int rightDiamondHeight(int i, int j, int count, double sum, int step, float randomness)
@@ -171,9 +179,12 @@ namespace WindowsGame1
                 count++;
             }
 
-            if (i + (step / 2) < size)
-                return (int)Math.Round((float)sum / count + rand.Next((int)-randomness, (int)randomness));
-            return -1;
+            int ele = (int)Math.Round((float)sum / count + rand.Next((int)-randomness, (int)randomness));
+            if (ele > MAX)
+                ele = MAX;
+            if (ele < MIN)
+                ele = MIN;
+            return ele;
         }
 
         public int getHeight(int x, int y)

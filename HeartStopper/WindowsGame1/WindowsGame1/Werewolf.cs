@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -20,6 +21,9 @@ namespace HeartStopper
         float moveX, moveY, x, y;
         private int screenWidth;
         private int screenHeight;
+        static DateTime startRumble;
+        bool run = true;
+        bool hit = false;
 
         public Werewolf(Game game, int width, int height)
             : base(game)
@@ -72,22 +76,64 @@ namespace HeartStopper
             // TODO: Add your update code here
             doMovement(gameTime);
 
+
             addRestrictions(gameTime);
 
         }
         private void addRestrictions(GameTime gameTime)
         {
+            
+            //int milliseconds = 2000;
+            //Thread.Sleep(milliseconds); 
+            //startRumble = DateTime.Now;
             // set boundaries
             //GamePad.SetVibration(PlayerIndex.One, 1, 1); // max vibration
-            if (rec.X <= 0)
-                rec.X = 0;
+            
+            if (rec.X <=0 && !hit)
+            {
+                //GamePad.SetVibration(PlayerIndex.One,0.3f,0.3f);
+                hit = true;
+                
+                //Thread.Sleep(milliseconds);
+                if (hit&&run)
+                {
+                    Console.WriteLine("1");
+                    GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+                    startRumble = DateTime.Now;
+                    run = false;
+                }
+                //GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+                 
+            }
             if (rec.X + tex.Width >= screenWidth)
                 rec.X = screenWidth - tex.Width;
             if (rec.Y <= 0)
                 rec.Y = 0;
             if (rec.Y + tex.Height >= screenHeight)
                 rec.Y = screenHeight - tex.Height;
+
+            /*if (hit&&run)
+            {
+                Console.WriteLine("1");
+                //GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
+                startRumble = DateTime.Now;
+                run = false;
+                
+            }*/
+
+            TimeSpan timePassed = DateTime.Now - startRumble;
+            if (!run && timePassed.TotalSeconds >= 1.0)
+            {
+                //hit = false;
+                Console.WriteLine("2");
+                GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+                run = true;
+                rec.X = 0; 
+            }
             
+            if (rec.X > 1) 
+                hit = false;
+
             base.Update(gameTime);
         }
         private void doMovement(GameTime gameTime)
@@ -115,11 +161,11 @@ namespace HeartStopper
 
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X == 0.0)
             {
-                velX = velX / 1.1f;
+                velX = velX / 1.3f;
             }
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y == 0.0)
             {
-                velY = velY / 1.1f;
+                velY = velY / 1.3f;
             }
             velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
             velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;

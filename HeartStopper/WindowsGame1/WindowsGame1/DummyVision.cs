@@ -128,6 +128,9 @@ namespace WindowsGame1
 
         private void castVisionCone(int x, int y, int dx, int dy, int total, int quota)
         {
+            if (x >= Game1.MAP_SIZE || y >= Game1.MAP_SIZE || x < 0 || y < 0)
+                return;
+
             if (highlightIndex >= MAX_HIGHLIGHTS)
                 return;
 
@@ -147,12 +150,13 @@ namespace WindowsGame1
                 castVisionLine(x, y, 0, -dy, total, quota);
             }
 
-            Tile cTile = game.map.getTile(x, y);
-            Tile nTile = game.map.getTile(x + dx, y + dy);
-            if (cTile == null || nTile == null)
+            if (x + dx >= Game1.MAP_SIZE || y + dy >= Game1.MAP_SIZE || x + dx < 0 || y + dy < 0)
                 return;
 
-            int deltaElevation = nTile.getElevation() - cTile.getElevation();
+            int currEle = game.map.grid[x, y];
+            int nextEle = game.map.grid[x + dx, y + dy];
+
+            int deltaElevation = currEle - nextEle;
 
             if (deltaElevation == 0)
                 total -= VCOST_EQUAL;
@@ -181,12 +185,16 @@ namespace WindowsGame1
             if (highlightIndex >= MAX_HIGHLIGHTS || quota <= 0)
                 return;
 
-            Tile cTile = game.map.getTile(x, y);
-            Tile nTile = game.map.getTile(x + dx, y + dy);
-            if (cTile == null || nTile == null)
+            if (x >= Game1.MAP_SIZE || y >= Game1.MAP_SIZE || x < 0 || y < 0)
                 return;
 
-            int deltaElevation = nTile.getElevation() - cTile.getElevation();
+            if (x + dx >= Game1.MAP_SIZE || y + dy >= Game1.MAP_SIZE || x + dx < 0 || y + dy < 0)
+                return;
+
+            int currEle = game.map.grid[x, y];
+            int nextEle = game.map.grid[x + dx, y + dy];
+
+            int deltaElevation = currEle - nextEle;
 
             if (deltaElevation == 0)
                 total -= VCOST_EQUAL;
