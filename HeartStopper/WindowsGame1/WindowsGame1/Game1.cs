@@ -30,7 +30,7 @@ namespace WindowsGame1
         public static int VIEWPORT_HEIGHT = 1080;
         public static int VIEWPORT_WIDTH = 1920;
 
-        public const int MAP_SIZE = 257; // must be 2^x + 1, where x is a positive integer
+        public const int MAP_SIZE = 129; // must be 2^x + 1, where x is a positive integer
 
         public Game1()
         {

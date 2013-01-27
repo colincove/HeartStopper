@@ -18,7 +18,7 @@ namespace HeartStopper
     /// </summary>
     public class Map : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        public const int TILE_SIZE = 24; // pretzels
+        public const int TILE_SIZE = 9; // pretzels
 
         //public Tile[,] grid;
         public int[,] grid;

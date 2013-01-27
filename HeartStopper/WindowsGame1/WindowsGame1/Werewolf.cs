@@ -27,7 +27,8 @@ namespace HeartStopper
         bool hit = false;
 
         Game1 game;
-        Vision vis;
+        //Vision vis;
+        DeadlyVision vis;
 
         private PlayerSkin skin;
 
@@ -53,8 +54,9 @@ namespace HeartStopper
         {
             // TODO: Add your initialization code here
 
-            vis = new Vision(game, this);
-            
+            //vis = new Vision(game, this);
+            vis = new DeadlyVision(game, this);
+
             base.Initialize();
 
 
