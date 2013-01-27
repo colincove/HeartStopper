@@ -17,6 +17,8 @@ namespace HeartStopper
     public class Werewolf : DrawableSprite
     {
         float moveX, moveY;//, x, y;
+        private int oldDepth = 0;
+        private float depthFriction = 0.0f;
         private int screenWidth;
         private int screenHeight;
 
@@ -72,6 +74,10 @@ namespace HeartStopper
             // TODO: Add your update code here
             //doMovement(gameTime);
            // doAccMovement(gameTime);
+            Map map=((Game1)Game).map;
+            //int currentDepth = map.grid[(int)(x * Map.TILE_SIZE),(int)(y * Map.TILE_SIZE)];
+           // depthFriction += oldDepth - currentDepth;
+            //oldDepth = currentDepth;
             doKeyAccMovement(gameTime);
             addRestrictions(gameTime);
 
@@ -123,7 +129,7 @@ namespace HeartStopper
                 Console.WriteLine("2");
                 GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
                 run = true;
-                x = 0; 
+                //x = 0; 
             }
             
             if (x > 1) 

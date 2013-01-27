@@ -45,16 +45,18 @@ namespace WindowsGame1
         private int maxY;
 
         private Map map;
+        
+        private Texture2D tex;
+
         public Sheep(Game1 game, int startX, int startY, Map map)
             : base(game)
         {
-            maxX = game.map.grid.GetLength(0);
-            maxY = game.map.grid.GetLength(1);
+          
             x = startX;
             y = startY;
 
             this.map = map;
-            
+            game.Components.Add(this);
             lastUpdateTime = System.Environment.TickCount;
             random = new Random();
             double randomDirection = random.NextDouble() * 4;// get a random number between 1 and 4
@@ -73,7 +75,27 @@ namespace WindowsGame1
             updatePosition();
             return y;
         }
-
+        public override void Initialize()
+        {
+            base.Initialize();
+            maxX = ((Game1)Game).map.grid.GetLength(0);
+            maxY = ((Game1)Game).map.grid.GetLength(1);
+        }
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        {
+            base.Update(gameTime);
+            updatePosition();
+        }
+        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            Game1.spriteBatch.Draw(tex, new Rectangle((int)(x - ((Game1)Game).cam.X), (int)(y - ((Game1)Game).cam.Y), 38, 50), new Rectangle(0, 0, 38, 50), Color.White);
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            tex = Game.Content.Load<Texture2D>("Images/Sheepl");
+        }
         private void updatePosition()
         {
 

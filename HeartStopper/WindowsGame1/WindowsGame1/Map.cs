@@ -39,6 +39,16 @@ namespace HeartStopper
             this.width = width;
             this.height = height;
             this.game.Components.Add(this);
+            Hunter hunter = new Hunter(game,200f,200f);
+            Sheep sheep = new Sheep(game, 300, 300, this);
+           sheep = new Sheep(game, 300, 300, this);
+            sheep = new Sheep(game, 120, 300, this);
+            sheep = new Sheep(game, 300, 1300, this);
+             sheep = new Sheep(game, 20, 300, this);
+             sheep = new Sheep(game, 50, 1500, this);
+            sheep = new Sheep(game, 400, 300, this);
+            sheep = new Sheep(game, 2000, 50, this);
+             sheep = new Sheep(game, 100, 300, this);
         }
 
         /// <summary>
@@ -48,7 +58,7 @@ namespace HeartStopper
         public override void Initialize()
         {
             // TODO: Add your initialization code here
-
+           
             spriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
 
             HeightMap hmap = new HeightMap(Game1.MAP_SIZE, 0);
