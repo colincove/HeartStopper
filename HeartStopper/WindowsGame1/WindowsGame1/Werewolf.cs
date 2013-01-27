@@ -18,7 +18,7 @@ namespace HeartStopper
     {
         public Texture2D tex;
         public Rectangle rec;
-        float moveX, moveY;
+        float moveX, moveY, x, y;
         private int screenWidth;
         private int screenHeight;
         static DateTime startRumble;
@@ -55,7 +55,10 @@ namespace HeartStopper
             //this.spriteBatch = new SpriteBatch(game.GraphicsDevice);
             // For now texture is coloured rectangle.
             tex = Game.Content.Load<Texture2D>("Images/werewolf");
-            rec = new Rectangle(150, 200, 38, 50);
+            x = 150;
+            y = 200;
+            rec = new Rectangle((int)(x-((Game1)Game).cam.X), (int)(y-((Game1)Game).cam.Y), 38, 50);
+            
             //float g = ((float)elevation / (float)MAX_ELEVATION) * 255f;
             //dummyColor = new Color(0, (int)g, 0);
             //texture = new Texture2D(game.GraphicsDevice, 1, 1);
@@ -71,8 +74,11 @@ namespace HeartStopper
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            //Console.WriteLine(rec.X + tex.Width);
-            doAccMovement(gameTime);
+
+            Console.WriteLine(rec.X + tex.Width);
+            doMovement(gameTime);
+
+
             addRestrictions(gameTime);
 
         }
@@ -135,25 +141,26 @@ namespace HeartStopper
         private void doMovement(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-                rec.X -= 10;
+                moveX -= 10;
             if (Keyboard.GetState().IsKeyDown(Keys.D))
-                rec.X += 10;
+                moveX += 10;
             if (Keyboard.GetState().IsKeyDown(Keys.W))
-                rec.Y -= 10;
+                moveY -= 10;
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-                rec.Y += 10;
+                moveY += 10;
 
             moveX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 5;
             moveY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 5;
 
-            rec.X = (int)moveX;
-            rec.Y = (int)moveY;
+            x = moveX;
+            y = moveY;
             base.Update(gameTime);
         }
         private float velX = 0.0f;
         private float velY = 0.0f;
         private void doAccMovement(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X == 0.0)
             {
                 velX = velX / 1.3f;
@@ -165,21 +172,28 @@ namespace HeartStopper
             velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
             velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
 
-            rec.X += (int)velX;
-            rec.Y += (int)velY;
+            x += velX;
+            y += velY;
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-
+            rec.X = (int)(x-((Game1)Game).cam.X)+Game1.VIEWPORT_WIDTH/2;
+            rec.Y = (int)(y-((Game1)Game).cam.Y)+Game1.VIEWPORT_HEIGHT/2;
             Game1.spriteBatch.Begin();
             Game1.spriteBatch.Draw(tex, rec, Color.White);
             Game1.spriteBatch.End();
         }
-
-
+        public float X
+        {
+            get { return x; }
+        }
+        public float Y
+        {
+            get { return y; }
+        }
       
     }
 }
