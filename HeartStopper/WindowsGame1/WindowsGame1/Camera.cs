@@ -10,7 +10,7 @@ namespace WindowsGame1
     public class Camera:DrawableGameComponent
     {
         private Werewolf wolf;
-        private float x, y, follow=30f;
+        private float x, y, follow=10f;
         public Camera(Game game, Werewolf wolf) :
             base(game)
         {

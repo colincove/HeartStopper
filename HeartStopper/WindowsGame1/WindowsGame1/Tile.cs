@@ -18,22 +18,25 @@ namespace HeartStopper
     /// </summary>
     public class Tile : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        public const int TILE_SIZE = 36; // pretzels
+        public const int TILE_SIZE = 12; // pretzels
         public const int MAX_ELEVATION = 10;
 
         private Game game;
         private int elevation;
         private Texture2D texture;
-        private Vector2 id; // x,y index of location in grid.
+        public int x;
+        public int y;
+        //private Vector2 id; // x,y index of location in grid.
         private Color dummyColor;
 
-        public Tile(Game game, Vector2 id, int elevation)
+        public Tile(Game game, int x, int y, int elevation)
             : base(game)
         {
             // TODO: Construct any child components here
             DrawOrder = 1; // Always draw this first.
             this.game = game;
-            this.id = id;
+            this.x = x;
+            this.y = y;
             this.elevation = elevation;
             game.Components.Add(this);
         }
@@ -52,7 +55,7 @@ namespace HeartStopper
 
         protected override void LoadContent()
         {
-            base.LoadContent();
+            
             //this.spriteBatch = new SpriteBatch(game.GraphicsDevice);
             // For now texture is coloured rectangle.
 
@@ -60,6 +63,8 @@ namespace HeartStopper
             dummyColor = new Color(0, (int) g, 0);
             texture = new Texture2D(game.GraphicsDevice, 1, 1);
             texture.SetData(new[] { dummyColor });
+
+            base.LoadContent();
             
         }
 
@@ -79,13 +84,13 @@ namespace HeartStopper
 
             base.Draw(gameTime);
 
-            Game1.spriteBatch.Begin();
+            //Game1.spriteBatch.Begin();
 
-            int x = (int)id.X * TILE_SIZE;
-            int y = (int)id.Y * TILE_SIZE;
-            Game1.spriteBatch.Draw(texture, new Rectangle(x - (int)((Game1)Game).cam.X, y-(int)((Game1)Game).cam.Y, TILE_SIZE, TILE_SIZE), Color.White);
+            //int x = (int)id.X * TILE_SIZE;
+            //int y = (int)id.Y * TILE_SIZE;
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * TILE_SIZE - (int)((Game1)Game).cam.X, y * TILE_SIZE -(int)((Game1)Game).cam.Y, TILE_SIZE, TILE_SIZE), Color.White);
 
-            Game1.spriteBatch.End();
+            //Game1.spriteBatch.End();
         }
 
 

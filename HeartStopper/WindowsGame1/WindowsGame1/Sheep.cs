@@ -142,10 +142,16 @@ namespace WindowsGame1
                         && newY2 < maxY
                         && newY3 < maxY)
                     {
+                        int elevation1 = map.grid[newX1, newY1];
+                        int elevation2 = map.grid[newX2, newY2];
+                        int elevation3 = map.grid[newX3, newY3];
+                        int currentElevation = map.grid[x, y];
+                        /*
                         int elevation1 = map.grid[newX1, newY1].getElevation();
                         int elevation2 = map.grid[newX2, newY2].getElevation();
                         int elevation3 = map.grid[newX3, newY3].getElevation();
                         int currentElevation = map.grid[x, y].getElevation();
+                        */
 
                         double randElevation = random.NextDouble();
                         bool foundTile = true;

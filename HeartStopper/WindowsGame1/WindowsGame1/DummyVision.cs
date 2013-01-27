@@ -23,12 +23,12 @@ namespace WindowsGame1
         const int DIR_UP = -1;
         const int DIR_DOWN = 1;
 
-        const int MAX_HIGHLIGHTS = 128;
+        const int MAX_HIGHLIGHTS = 1024;
         const int VISION_RANGE = 100; // Starting 'vision range' resource. Delta elevation of surrounding terrain tied to cost of seeing.
 
-        const int VCOST_EQUAL = VISION_RANGE / 10;
-        const int VCOST_DOWNHILL = VISION_RANGE / 20;
-        const int VCOST_UPHILL = VISION_RANGE / 2;
+        const int VCOST_EQUAL = VISION_RANGE / 30;
+        const int VCOST_DOWNHILL = VISION_RANGE / 80;
+        const int VCOST_UPHILL = VISION_RANGE / 6;
 
         Game1 game;
         int x;
@@ -63,7 +63,7 @@ namespace WindowsGame1
             highlights = new VisionHighlight[MAX_HIGHLIGHTS];
             for (int i = 0; i < MAX_HIGHLIGHTS; i++)
             {
-                highlights[i] = new VisionHighlight(this.game, this.x, this.y);
+                highlights[i] = new VisionHighlight(this.game, this.x, this.y, (int) (200 - (((float) i / (float) MAX_HIGHLIGHTS) * 600)));
             }
             base.Initialize();
 
@@ -128,6 +128,9 @@ namespace WindowsGame1
 
         private void castVisionCone(int x, int y, int dx, int dy, int total, int quota)
         {
+            if (x >= Game1.MAP_SIZE || y >= Game1.MAP_SIZE || x < 0 || y < 0)
+                return;
+
             if (highlightIndex >= MAX_HIGHLIGHTS)
                 return;
 
@@ -147,12 +150,13 @@ namespace WindowsGame1
                 castVisionLine(x, y, 0, -dy, total, quota);
             }
 
-            Tile cTile = game.map.getTile(x, y);
-            Tile nTile = game.map.getTile(x + dx, y + dy);
-            if (cTile == null || nTile == null)
+            if (x + dx >= Game1.MAP_SIZE || y + dy >= Game1.MAP_SIZE || x + dx < 0 || y + dy < 0)
                 return;
 
-            int deltaElevation = nTile.getElevation() - cTile.getElevation();
+            int currEle = game.map.grid[x, y];
+            int nextEle = game.map.grid[x + dx, y + dy];
+
+            int deltaElevation = currEle - nextEle;
 
             if (deltaElevation == 0)
                 total -= VCOST_EQUAL;
@@ -181,12 +185,16 @@ namespace WindowsGame1
             if (highlightIndex >= MAX_HIGHLIGHTS || quota <= 0)
                 return;
 
-            Tile cTile = game.map.getTile(x, y);
-            Tile nTile = game.map.getTile(x + dx, y + dy);
-            if (cTile == null || nTile == null)
+            if (x >= Game1.MAP_SIZE || y >= Game1.MAP_SIZE || x < 0 || y < 0)
                 return;
 
-            int deltaElevation = nTile.getElevation() - cTile.getElevation();
+            if (x + dx >= Game1.MAP_SIZE || y + dy >= Game1.MAP_SIZE || x + dx < 0 || y + dy < 0)
+                return;
+
+            int currEle = game.map.grid[x, y];
+            int nextEle = game.map.grid[x + dx, y + dy];
+
+            int deltaElevation = currEle - nextEle;
 
             if (deltaElevation == 0)
                 total -= VCOST_EQUAL;
