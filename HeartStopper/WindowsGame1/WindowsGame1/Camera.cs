@@ -25,11 +25,11 @@ namespace WindowsGame1
         }
         public float X
         {
-            get { return x; }
+            get { return x - Game1.VIEWPORT_WIDTH / 2; }
         }
         public float Y
         {
-            get { return y; }
+            get { return y - Game1.VIEWPORT_HEIGHT / 2; }
         }
     }
 }

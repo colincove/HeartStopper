@@ -17,28 +17,32 @@ namespace WindowsGame1
     /// </summary>
     public class Vision : Microsoft.Xna.Framework.GameComponent
     {
-        const int DIR_NONE = 0;
-        const int DIR_LEFT = -1;
-        const int DIR_RIGHT = 1;
-        const int DIR_UP = -1;
-        const int DIR_DOWN = 1;
 
-        const int MAX_HIGHLIGHTS = 1024;
+        const int DIR_UP = 0;
+        const int DIR_UPRIGHT = 1;
+        const int DIR_RIGHT = 2;
+        const int DIR_DOWNRIGHT = 3;
+        const int DIR_DOWN1 = 4;
+        const int DIR_DOWN2 = -4;
+        const int DIR_DOWNLEFT = -3;
+        const int DIR_LEFT = -2;
+        const int DIR_UPLEFT = -1;
+        
+        const int MAX_HIGHLIGHTS = 4096;
         const int VISION_RANGE = 1024; // Starting 'vision range' resource. Delta elevation of surrounding terrain tied to cost of seeing.
 
-        const int VCOST_EQUAL = VISION_RANGE / 30;
-        const int VCOST_DOWNHILL = VISION_RANGE / 80;
-        const int VCOST_UPHILL = VISION_RANGE / 5;
+        const int VCOST_EQUAL = VISION_RANGE / 80;
+        const int VCOST_DOWNHILL = VISION_RANGE / 160;
+        const int VCOST_UPHILL = VISION_RANGE / 8;
 
         Game1 game;
         DrawableSprite parent;
-
-        int dirLR; // Left/right direction
-        int dirUD; // up/down direction
-        KeyboardState oldState;
+        int roundedDir;
 
         VisionHighlight[] highlights;
         private int highlightIndex;
+
+        Vector2 tile;
 
         public Vision(Game1 game, DrawableSprite parent)
             : base(game)
@@ -46,8 +50,8 @@ namespace WindowsGame1
             // TODO: Construct any child components here
             this.game = game;
             this.parent = parent;
-            this.dirLR = DIR_NONE;
-            this.dirUD = DIR_NONE;
+            //this.dirLR = DIR_NONE;
+            //this.dirUD = DIR_NONE;
             this.game.Components.Add(this);
         }
 
@@ -62,10 +66,13 @@ namespace WindowsGame1
             highlights = new VisionHighlight[MAX_HIGHLIGHTS];
             for (int i = 0; i < MAX_HIGHLIGHTS; i++)
             {
+                
                 highlights[i] = new VisionHighlight(this.game, 0, 0, (int) (200 - (((float) i / (float) MAX_HIGHLIGHTS) * 600)));
             }
-            base.Initialize();
 
+            tile = new Vector2(0, 0);
+
+            base.Initialize();
         }
 
         /// <summary>
@@ -74,41 +81,9 @@ namespace WindowsGame1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            /*
-            KeyboardState newState = Keyboard.GetState();
-
-            if (oldState != null)
-            {
-                // TODO: Add your update code here
-                if (newState.IsKeyDown(Keys.A) && !oldState.IsKeyDown(Keys.A))
-                {
-                    x--;
-                    this.dirLR = DIR_LEFT;
-                    this.dirUD = DIR_NONE;
-                }
-                if (newState.IsKeyDown(Keys.D) && !oldState.IsKeyDown(Keys.D))
-                {
-                    x++;
-                    this.dirLR = DIR_RIGHT;
-                    this.dirUD = DIR_NONE;
-                }
-                if (newState.IsKeyDown(Keys.W) && !oldState.IsKeyDown(Keys.W))
-                {
-                    y--;
-                    this.dirUD = DIR_UP;
-                    this.dirLR = DIR_NONE;
-                }
-                if (newState.IsKeyDown(Keys.S) && !oldState.IsKeyDown(Keys.S))
-                {
-                    y++;
-                    this.dirUD = DIR_DOWN;
-                    this.dirLR = DIR_NONE;
-                }
-            }
-            */
+            
+            roundedDir = (int) Math.Round((parent.angle * 4.0f / Math.PI));
             updateHighlights();
-
-            //oldState = newState;
             base.Update(gameTime);
         }
 
@@ -123,14 +98,61 @@ namespace WindowsGame1
             }
             highlightIndex = 0;
 
-            castVisionCone((int) parent.x, (int) parent.y, dirLR, dirUD, VISION_RANGE, 1);
+            int dirLR = 1;
+            int dirUD = 1;
+            switch (roundedDir)
+            {
+                case DIR_UP:
+                    dirLR = 0;
+                    dirUD = -1;
+                    break;
+                case DIR_UPRIGHT:
+                    dirLR = 1;
+                    dirUD = -1;
+                    break;
+                case DIR_RIGHT:
+                    dirLR = 1;
+                    dirUD = 0;
+                    break;
+                case DIR_DOWNRIGHT:
+                    dirLR = 1;
+                    dirUD = 1;
+                    break;
+                case DIR_DOWN1:
+                case DIR_DOWN2:
+                    dirLR = 0;
+                    dirUD = 1;
+                    break;
+                case DIR_DOWNLEFT:
+                    dirLR = -1;
+                    dirUD = 1;
+                    break;
+                case DIR_LEFT:
+                    dirLR = -1;
+                    dirUD = 0;
+                    break;
+                case DIR_UPLEFT:
+                    dirLR = -1;
+                    dirUD = -1;
+                    break;
+                default:
+                    dirLR = 0;
+                    dirUD = 0;
+                    break;
+            }
+
+            tile = game.map.getTile(parent.x + game.cam.X + Game1.VIEWPORT_WIDTH/2, parent.y + game.cam.Y + Game1.VIEWPORT_HEIGHT/2);
+            //Console.WriteLine(tile.X + " " + tile.Y);
+            castVisionCone((int) tile.X, (int) tile.Y, dirLR, dirUD, VISION_RANGE, 1);
         }
 
         private void castVisionCone(int x, int y, int dx, int dy, int total, int quota)
         {
             if (x >= Game1.MAP_SIZE || y >= Game1.MAP_SIZE || x < 0 || y < 0)
+            {
+                Console.WriteLine(x + " " + y);
                 return;
-
+            }
             if (highlightIndex >= MAX_HIGHLIGHTS)
                 return;
 
@@ -171,17 +193,21 @@ namespace WindowsGame1
 
             if (total >= 0)
             {
-                VisionHighlight hl = highlights[highlightIndex];
-                hl.drawIt = true;
-                hl.setPosition(new Vector2(x + dx, y + dy));
-                highlightIndex++;
+                if (highlightIndex < MAX_HIGHLIGHTS)
+                {
+                    VisionHighlight hl = highlights[highlightIndex];
+                    hl.drawIt = true;
+                    hl.setPosition(new Vector2(x + dx, y + dy));
+                    highlightIndex++;
 
-                castVisionCone(x + dx, y + dy, dx, dy, total, quota);
+                    castVisionCone(x + dx, y + dy, dx, dy, total, quota);
+                }
             }
         }
 
         private void castVisionLine(int x, int y, int dx, int dy, int total, int quota)
         {
+            
             if (highlightIndex >= MAX_HIGHLIGHTS || quota <= 0)
                 return;
 

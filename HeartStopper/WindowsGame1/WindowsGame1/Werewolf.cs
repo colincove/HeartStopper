@@ -38,6 +38,8 @@ namespace HeartStopper
             screenHeight = height*Tile.TILE_SIZE;
             game.Components.Add(this);
             skin = new PlayerSkin(game, this);
+            this.x = 0;
+            this.y = 0;
             this.game = game;
         }
 
@@ -73,8 +75,8 @@ namespace HeartStopper
             //doMovement(gameTime);
            // doAccMovement(gameTime);
             doKeyAccMovement(gameTime);
-            addRestrictions(gameTime);
-
+            //addRestrictions(gameTime);
+            //base.Update(gameTime);
         }
         private void addRestrictions(GameTime gameTime)
         {
@@ -123,12 +125,10 @@ namespace HeartStopper
                 Console.WriteLine("2");
                 GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
                 run = true;
-                x = 0; 
             }
             
-            if (x > 1) 
-                hit = false;
-            base.Update(gameTime);
+            //if (x > 1) 
+            //    hit = false;
         }
         private void doMovement(GameTime gameTime)
         {
@@ -190,7 +190,6 @@ namespace HeartStopper
 
             x += velX;
             y += velY;
-            base.Update(gameTime);
         }
         private void doKeyAccMovement(GameTime gameTime)
         {
