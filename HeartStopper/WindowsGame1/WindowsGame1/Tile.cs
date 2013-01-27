@@ -83,7 +83,7 @@ namespace HeartStopper
 
             int x = (int)id.X * TILE_SIZE;
             int y = (int)id.Y * TILE_SIZE;
-            Game1.spriteBatch.Draw(texture, new Rectangle(x, y, TILE_SIZE, TILE_SIZE), Color.White);
+            Game1.spriteBatch.Draw(texture, new Rectangle(x - (int)((Game1)Game).cam.X, y-(int)((Game1)Game).cam.Y, TILE_SIZE, TILE_SIZE), Color.White);
 
             Game1.spriteBatch.End();
         }

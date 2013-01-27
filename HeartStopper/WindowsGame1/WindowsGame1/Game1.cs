@@ -25,13 +25,15 @@ namespace WindowsGame1
         public Werewolf wW;
 
         DummyVision temp;
-
+        public Camera cam;
+        public static int VIEWPORT_HEIGHT = 1080;
+        public static int VIEWPORT_WIDTH = 1920;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             // View window resolution.
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = VIEWPORT_HEIGHT;
+            graphics.PreferredBackBufferWidth = VIEWPORT_WIDTH;
             Content.RootDirectory = "Content";
 
             //wW = new Werewolf(this, screenWidth, screenHeight);
@@ -48,6 +50,7 @@ namespace WindowsGame1
             // TODO: Add your initialization logic here
             map = new Map(this, 40, 40);
             wW = new Werewolf(this, map.getWidth(), map.getheight());
+            cam = new Camera(this, wW);
             temp = new DummyVision(this, 5, 5);
             base.Initialize();
             

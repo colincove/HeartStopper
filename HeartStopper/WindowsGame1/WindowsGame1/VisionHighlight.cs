@@ -51,7 +51,7 @@ namespace WindowsGame1
         protected override void LoadContent()
         {
             base.LoadContent();
-            colour = new Color(200,200,200,1); // White Highlight
+            colour = new Color(200,200,200,100); // White Highlight
             texture = new Texture2D(game.GraphicsDevice, 1, 1);
             texture.SetData(new[] { colour });
 
@@ -87,7 +87,7 @@ namespace WindowsGame1
 
             Game1.spriteBatch.Begin();
 
-            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255,255,255,50));
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), Color.White);
 
             Game1.spriteBatch.End();
         }
