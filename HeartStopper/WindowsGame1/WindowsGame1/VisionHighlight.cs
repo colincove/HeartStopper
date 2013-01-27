@@ -87,11 +87,11 @@ namespace WindowsGame1
 
             
 
-            Game1.spriteBatch.Begin();
+            //Game1.spriteBatch.Begin();
 
             Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255,255,255,0));
 
-            Game1.spriteBatch.End();
+            //Game1.spriteBatch.End();
         }
 
         public Vector2 getPosition()

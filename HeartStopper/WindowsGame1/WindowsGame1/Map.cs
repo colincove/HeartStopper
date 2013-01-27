@@ -22,11 +22,11 @@ namespace HeartStopper
         public Tile[,] grid;
         private int width;
         private int height;
-        private Game game;
+        private Game1 game;
 
         public static SpriteBatch spriteBatch; // For all the map info.
 
-        public Map(Game game, int width, int height)
+        public Map(Game1 game, int width, int height)
             : base(game)
             
         {
@@ -47,26 +47,17 @@ namespace HeartStopper
 
             spriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
 
+            HeightMap hmap = new HeightMap(Game1.MAP_SIZE, 0);
+            
             // Init the map in a dumb way for now.
             grid = new Tile[width, height];
 
+            /*
             int[,] elevationMap = new int[width, height];
 
             // ***** This hard-coded elevation map is 21x11 ******
             elevationMap = new int[,]
-            //  0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20
-          /*  { { 1, 2, 3, 3, 4, 4, 4, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 0
-              { 1, 2, 3, 4, 4, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 1
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 2
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 3
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 4
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 5
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 6
-              { 1, 2, 3, 4, 4, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 7
-              { 1, 2, 3, 3, 4, 4, 4, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 8
-              { 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 9
-              { 1, 1, 2, 2, 3, 3, 4, 4, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 10
-            }; */
+            
             {
                 {4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,5,4,3,3,3,3,3,3,4,4,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,7,7},
                 {4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,7,7,8,8,8,8,8,8,8,8,8,8,8,7,6,5,4,3,3,3,3,3,4,4,4,5,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,7},
@@ -129,14 +120,17 @@ namespace HeartStopper
                 {7,7,7,7,7,7,7,7,7,6,5,5,4,4,4,4,4,4,4,4,3,2,2,2,2,2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,5,5,4,4,4,4,3,3,4,4,4,4,4},
                 {7,7,7,7,7,7,7,7,7,7,6,5,5,4,4,4,4,4,4,3,3,2,2,2,2,2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,6,5,4,4,4,4,3,3,4,4,4,4,4}
             };
+             */
+            
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
-                    grid[i, j] = new Tile(game, new Vector2(i,j), elevationMap[j, i]);
+                    grid[i, j] = new Tile(game, i, j, hmap.getHeight(i, j));
                 }
             }
 
+            Console.WriteLine("map initialization complete.");
             base.Initialize();
         }
 

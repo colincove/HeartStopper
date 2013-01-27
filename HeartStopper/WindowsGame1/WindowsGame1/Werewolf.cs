@@ -70,7 +70,6 @@ namespace HeartStopper
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            Console.WriteLine(rec.X + tex.Width);
             doMovement(gameTime);
 
             addRestrictions(gameTime);
@@ -135,9 +134,9 @@ namespace HeartStopper
             base.Draw(gameTime);
             rec.X = (int)(x-((Game1)Game).cam.X)+Game1.VIEWPORT_WIDTH/2;
             rec.Y = (int)(y-((Game1)Game).cam.Y)+Game1.VIEWPORT_HEIGHT/2;
-            Game1.spriteBatch.Begin();
+            //Game1.spriteBatch.Begin();
             Game1.spriteBatch.Draw(tex, rec, Color.White);
-            Game1.spriteBatch.End();
+            //Game1.spriteBatch.End();
         }
         public float X
         {
