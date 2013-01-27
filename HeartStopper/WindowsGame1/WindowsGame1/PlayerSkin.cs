@@ -50,9 +50,30 @@ namespace WindowsGame1
         public override void Draw(GameTime gameTime)
         {
 
-           
+            Console.WriteLine(wolf.x);
             base.Draw(gameTime);
-            sprite.drawSprite(SpriteEffects.None, destRect, gameTime, (float)angle);
+            Map map=((Game1)Game).map;
+            int x = (int)(wolf.x / (float)24);
+            int y = (int)(wolf.y / (float)24);
+            if (x < 0)
+            {
+                x = 0;
+            }
+            else if ((int)x > map.getWidth())
+            {
+                x = map.getWidth();
+            }
+            if (y < 0)
+            {
+                y = 0;
+            }
+            else if (y > map.getHeight())
+            {
+                y = map.getHeight();
+            }
+           // float scale=(map.grid[x,y]/(float)6);
+           
+            sprite.drawSprite(SpriteEffects.None, destRect, gameTime, (float)angle,1.0f);
          
         }
         protected override void LoadContent()

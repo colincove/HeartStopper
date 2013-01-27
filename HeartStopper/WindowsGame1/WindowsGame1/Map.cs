@@ -39,16 +39,27 @@ namespace HeartStopper
             this.width = width;
             this.height = height;
             this.game.Components.Add(this);
-            Hunter hunter = new Hunter(game,200f,200f);
-            Sheep sheep = new Sheep(game, 300, 300, this);
-           sheep = new Sheep(game, 300, 300, this);
-            sheep = new Sheep(game, 120, 300, this);
-            sheep = new Sheep(game, 300, 1300, this);
-             sheep = new Sheep(game, 20, 300, this);
-             sheep = new Sheep(game, 50, 1500, this);
-            sheep = new Sheep(game, 400, 300, this);
-            sheep = new Sheep(game, 2000, 50, this);
-             sheep = new Sheep(game, 100, 300, this);
+           /* Hunter hunter = new Hunter(game,200f,200f);
+            hunter = new Hunter(game, 200f, 200f);
+            hunter = new Hunter(game, 250f, 200f);
+            hunter = new Hunter(game, 3500f, 350f);
+            hunter = new Hunter(game, 400f, 200f);
+            hunter = new Hunter(game, 500f, 450f);
+            hunter = new Hunter(game, 5500f, 780f);
+            hunter = new Hunter(game, 200f, 4500f);
+            hunter = new Hunter(game, 350f, 200f);
+            hunter = new Hunter(game, 100f, 200f);
+            hunter = new Hunter(game, 200f, 240f);*/
+            //hunter = new Hunter(game, 200f, 200f);
+            Sheep sheep = new Sheep(game, 300, 300);
+           sheep = new Sheep(game, 300, 300);
+            sheep = new Sheep(game, 120, 300);
+            sheep = new Sheep(game, 300, 1300);
+             sheep = new Sheep(game, 20, 300);
+             sheep = new Sheep(game, 50, 1500);
+            sheep = new Sheep(game, 400, 300);
+            sheep = new Sheep(game, 2000, 50);
+             sheep = new Sheep(game, 100, 300);
         }
 
         /// <summary>

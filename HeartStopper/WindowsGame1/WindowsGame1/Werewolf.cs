@@ -53,7 +53,7 @@ namespace HeartStopper
         {
             // TODO: Add your initialization code here
 
-            vis = new Vision(game, this);
+            //vis = new Vision(game, this);
             
             base.Initialize();
 
@@ -77,12 +77,12 @@ namespace HeartStopper
             //doMovement(gameTime);
            // doAccMovement(gameTime);
             Map map=((Game1)Game).map;
-            //int currentDepth = map.grid[(int)(x * Map.TILE_SIZE),(int)(y * Map.TILE_SIZE)];
-           // depthFriction += oldDepth - currentDepth;
-            //oldDepth = currentDepth;
+          //  int currentDepth = map.grid[(int)(x * 24),(int)(y * 24)];
+          // depthFriction += oldDepth - currentDepth;
+          //  oldDepth = currentDepth;
             doKeyAccMovement(gameTime);
             //addRestrictions(gameTime);
-            //base.Update(gameTime);
+            base.Update(gameTime);
         }
         private void addRestrictions(GameTime gameTime)
         {

@@ -2,89 +2,179 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using HeartStopper;
-using WindowsGame1;
+using Microsoft.Xna.Framework;
 
 namespace WindowsGame1
 {
-    public class Sheep : Microsoft.Xna.Framework.DrawableGameComponent
+    public class Sheep : DrawableSprite
     {
-        private int x;
-        private int y;
-
-        private const int MIN_MOVE_TIME = 1000;
-        private const int MAX_MOVE_TIME = 5000;
-
-        private const double MOVE_PROB = 0.64;
-        private const double TURN_PROB = 0.24;
-        private const double IDLE_PROB = 0.16;
-
-        private const double UP_PROB = 0.16;
-        private const double FLAT_PROB = 0.24;
-        private const double DOWN_PROB = 0.6;
-
-        private const int NORTH = 0;
-        private const int EAST = 1;
-        private const int SOUTH = 2;
-        private const int WEST = 3;
-
-        private double PERCENT_CORNER = 0.10;
-
-        private int direction;
-        private int lastUpdateTime;
-        private Random random;
-
-        private int maxX;
-        private int maxY;
-
-        private Map map;
-        
+        public static Sheep[] sheep = new Sheep[100];
+        public static float velXAvg = 0.0f;
+        public static float velYAvg = 0.0f;
+        public static float prevVelXAvg = 0.0f;
+        public static float prevVelYAvg = 0.0f;
+        public static float posXAvg = 0.0f;
+        public static float posYAvg = 0.0f;
+        public static float prevPosXAvg = 0.0f;
+        public static float prevPosYAvg = 0.0f;
+        private static int updateCount = 0;
+        public int sheepListCount = 0;
+        private int index = 0;
         private Texture2D tex;
-
-        public Sheep(Game1 game, int startX, int startY, Map map)
+        private double changeStateTimer = 0;
+        private double lastUpdate = 0;
+        private Random random;
+        //states
+        private int IdleState = 0, MOVE = 1, MOVE_SHEEP = 2, TURN = 3, FLOCK = 4;
+        //4 indices match with the four states. 
+        private int[,] stateWeights;
+        private int currentState;
+        private int totalWeights = 0;
+        private bool inChase = false;
+        private float xVel = 0f, yVel = 0f;
+        public Sheep(Game1 game, float x, float y)
             : base(game)
         {
-          
-            x = startX;
-            y = startY;
+            // Add to the sheep list 
+            sheep[sheepListCount] = this;
+            index = sheepListCount;
+            sheepListCount++;
 
-            this.map = map;
+            stateWeights = new int[,] { { 4, IdleState }, { 10, MOVE }, { 10, MOVE_SHEEP }, { 7, TURN }, { 7, FLOCK } };
+            currentState = IdleState;
+            base.x = x;
+            base.y = y;
+            this.DrawOrder = 1000;
+            x += 500;
+            y += 500;
+            random = new Random((int)x);
             game.Components.Add(this);
-            lastUpdateTime = System.Environment.TickCount;
-            random = new Random();
-            double randomDirection = random.NextDouble() * 4;// get a random number between 1 and 4
-
-            direction = (int)randomDirection; 
-        }
-
-        public int getX()
-        {
-            updatePosition();
-            return x;
-        }
-
-        public int getY()
-        {
-            updatePosition();
-            return y;
-        }
-        public override void Initialize()
-        {
-            base.Initialize();
-            maxX = ((Game1)Game).map.grid.GetLength(0);
-            maxY = ((Game1)Game).map.grid.GetLength(1);
+            xVel = (float)random.Next(0, 5);
+            random = new Random((int)y);
+            yVel = (float)random.Next(0, 5);
+            Console.WriteLine("X: " + xVel + " y: " + yVel);
+            for (int i = 0; i < stateWeights.GetLength(0); i++)
+            {
+                totalWeights += stateWeights[i, 0];
+            }
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             base.Update(gameTime);
-            updatePosition();
+            if (currentState == FLOCK)
+            {
+                // Add sheep velocity and position to flock average
+                velXAvg += xVel;
+                velYAvg += yVel;
+
+                posXAvg += x;
+                posYAvg += y;
+
+                // Adjust sheep velocity to be closer to the flock average
+                float flockDist = prevPosXAvg - x;
+                if (flockDist < 10)
+                {
+                    xVel = (2.0f * xVel + prevVelXAvg) / 3.0f;
+                }
+                else
+                {
+                    xVel = (1.0f * xVel + 1.0f * prevVelXAvg + 2.0f * (prevPosXAvg - x)) / 4.0f;
+                }
+
+                flockDist = prevPosYAvg - y;
+                if (flockDist < 10)
+                {
+                    yVel = (2.0f * yVel + prevVelYAvg) / 3.0f;
+                }
+                else
+                {
+                    yVel = (1.0f * yVel + 1.0f * prevVelYAvg + 2.0f * (prevPosYAvg - y)) / 4.0f;
+                }
+
+                /*float xAvg = 0f;
+                float yAvg = 0f;
+                for (int i = 0; i < sheepListCount; i++)
+                {
+                    xAvg += sheep[i].xVel;
+                    yAvg += sheep[i].yVel;
+                }*/
+
+                updateCount++;
+
+                if (updateCount == sheepListCount)
+                {
+                    prevVelXAvg = velXAvg / (float)sheepListCount;
+                    prevVelYAvg = velYAvg / (float)sheepListCount;
+
+                    prevPosXAvg = posXAvg / (float)sheepListCount;
+                    prevPosYAvg = posYAvg / (float)sheepListCount;
+
+                    velXAvg = 0.0f;
+                    velYAvg = 0.0f;
+                    posXAvg = 0.0f;
+                    posYAvg = 0.0f;
+                }
+            }
+            if (!inChase)
+            {
+                lastUpdate += gameTime.ElapsedGameTime.Milliseconds;
+                if (lastUpdate > changeStateTimer)
+                {
+                    lastUpdate = 0;
+                    changeStateTimer = (random.Next(1000));
+                    int randomState = random.Next(totalWeights);
+                    int counter = 0;
+                    for (int i = 0; i < stateWeights.GetLength(0); i++)
+                    {
+                        counter += stateWeights[i, 0];
+                        if (counter > randomState)
+                        {
+                            currentState = stateWeights[i, 1];
+                            break;
+                        }
+                    }
+                    currentState = FLOCK;
+                    if (currentState == IdleState)
+                    {
+                        xVel = 0;
+                        yVel = 0;
+                    }
+                    else if (currentState == MOVE)
+                    {
+                        xVel = ((float)random.Next(100) / 100 * 2 - 1);
+                        yVel = ((float)random.Next(100) / 100 * 2 - 1);
+                    }
+                    else if (currentState == MOVE_SHEEP)
+                    {
+                        xVel = ((float)random.Next(100) / 100 * 2 - 1);
+                        yVel = ((float)random.Next(100) / 100 * 2 - 1);
+                    }
+                    else if (currentState == TURN)
+                    {
+                        xVel = xVel * -1;
+                    }
+                }
+
+            }
+            else
+            {
+
+            }
+            x += xVel;
+            y += yVel;
+        }
+        private void doIdleState()
+        {
+        }
+        private void doMoveState()
+        {
+        }
+        private void doMoveSheepState()
+        {
+        }
+        private void doTurnState()
+        {
         }
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
@@ -94,263 +184,8 @@ namespace WindowsGame1
         protected override void LoadContent()
         {
             base.LoadContent();
-            tex = Game.Content.Load<Texture2D>("Images/Sheepl");
+            tex = Game.Content.Load<Texture2D>("Images/werewolf");
         }
-        private void updatePosition()
-        {
 
-            while (lastUpdateTime < System.Environment.TickCount)
-            {
-                lastUpdateTime = lastUpdateTime + random.Next(MAX_MOVE_TIME - MIN_MOVE_TIME) + MIN_MOVE_TIME;
-
-                double randomAction = random.NextDouble();
-                if (randomAction < MOVE_PROB)
-                {
-                    int newX1=0;
-                    int newX2= 0;
-                    int newX3= 0;
-
-                    int newY1=0;
-                    int newY2=0;
-                    int newY3=0;
-
-                    if (direction == NORTH || direction == SOUTH)
-                    {
-                        newX1 = x - 1;
-                        newX2 = x;
-                        newX3 = x + 1;
-                        if (direction == NORTH)
-                        {
-                            newY1 = y + 1;
-                            newY2 = y + 1;
-                            newY3 = y + 1;
-                        }
-                        else if(direction == SOUTH)
-                        {
-                            newY1 = y - 1;
-                            newY2 = y - 1;
-                            newY3 = y - 1;
-                        }
-                    }
-
-                    if (direction == WEST || direction == EAST)
-                    {
-                        newY1 = x - 1;
-                        newY2 = x;
-                        newY3 = x + 1;
-                        if (direction == EAST)
-                        {
-                            newX1 = y + 1;
-                            newX2 = y + 1;
-                            newX3 = y + 1;
-                        }
-                        else if (direction == WEST)
-                        {
-                            newX1 = y - 1;
-                            newX2 = y - 1;
-                            newX3 = y - 1;
-                        }
-                    }
-                    if (newX1 >= 0
-                        && newX2 >= 0
-                        && newX3 >= 0
-                        && newX1 < maxX
-                        && newX2 < maxX
-                        && newX3 < maxX
-                        && newY1 >= 0
-                        && newY2 >= 0
-                        && newY3 >= 0
-                        && newY1 < maxY
-                        && newY2 < maxY
-                        && newY3 < maxY)
-                    {
-                        int elevation1 = map.grid[newX1, newY1];
-                        int elevation2 = map.grid[newX2, newY2];
-                        int elevation3 = map.grid[newX3, newY3];
-                        int currentElevation = map.grid[x, y];
-                        /*
-                        int elevation1 = map.grid[newX1, newY1].getElevation();
-                        int elevation2 = map.grid[newX2, newY2].getElevation();
-                        int elevation3 = map.grid[newX3, newY3].getElevation();
-                        int currentElevation = map.grid[x, y].getElevation();
-                        */
-
-                        double randElevation = random.NextDouble();
-                        bool foundTile = true;
-                        if (randElevation < UP_PROB)
-                        {
-                            if (elevation1 > currentElevation)
-                            {
-                                x = newX1;
-                                y = newY1;
-                            }
-                            else if (elevation2 > currentElevation)
-                            {
-                                x = newX2;
-                                y = newY2;
-                            }
-                            else if (elevation3 > currentElevation)
-                            {
-                                x = newX3;
-                                y = newY3;
-                            }
-                            else
-                            {
-                                foundTile = false;
-                            }
-                        }
-                        else if (randElevation < UP_PROB + FLAT_PROB)
-                        {
-                            if (elevation1 == currentElevation)
-                            {
-                                x = newX1;
-                                y = newY1;
-                            }
-                            if (elevation2 == currentElevation)
-                            {
-                                x = newX2;
-                                y = newY2;
-                            }
-                            if (elevation3 == currentElevation)
-                            {
-                                x = newX3;
-                                y = newY3;
-                            }
-                            else
-                            {
-                                foundTile = false;
-                            }
-                        }
-                        else
-                        {
-                            if (elevation1 < currentElevation)
-                            {
-                                x = newX1;
-                                y = newY1;
-                            }
-                            else if (elevation2 < currentElevation)
-                            {
-                                x = newX2;
-                                y = newY2;
-                            }
-                            else if (elevation3 < currentElevation)
-                            {
-                                x = newX3;
-                                y = newY3;
-                            }
-                            else
-                            {
-                                foundTile = false;
-                            }
-                        }
-                        if (!foundTile)
-                        {
-                            double randTile = random.NextDouble();
-                            if (randTile < 0.33)
-                            {
-                                x = newX1;
-                                y = newY1;
-                            }
-                            else if (randTile < 0.66)
-                            {
-                                x = newX2;
-                                y = newY2;
-                            }
-                            else
-                            {
-                                x = newX3;
-                                y = newY3;
-                            }
-                        }
-                    }
-                }
-                else if (randomAction < MOVE_PROB + TURN_PROB)
-                {
-                    //turn
-                    int xCellsCorner = (int) PERCENT_CORNER * maxX;
-                    int yCellsCorner = (int) PERCENT_CORNER * maxY;
-                    bool bottomLeft = x < xCellsCorner && y < yCellsCorner;
-                    bool bottomRight = x > maxX-xCellsCorner && y < yCellsCorner;
-                    bool topLeft = x < xCellsCorner && y > maxY - yCellsCorner;
-                    bool topRight = x > maxX-xCellsCorner && y > maxY - yCellsCorner;
-                    double randomTurn = random.NextDouble();
-                    if (bottomLeft)
-                    {
-                        if (randomTurn < 0.5)
-                        {
-                            direction = NORTH;
-                        }
-                        else
-                        {
-                            direction = EAST;
-                        }
-                    }
-                    else if (bottomRight)
-                    {
-                        if (randomTurn < 0.5)
-                        {
-                            direction = NORTH;
-                        }
-                        else
-                        {
-                            direction = WEST;
-                        }
-                    }
-                    else if (topLeft)
-                    {
-                        if (randomTurn < 0.5)
-                        {
-                            direction = SOUTH;
-                        }
-                        else
-                        {
-                            direction = EAST;
-                        }
-                    }
-                    else if (topRight)
-                    {
-                        if (randomTurn < 0.5)
-                        {
-                            direction = SOUTH;
-                        }
-                        else
-                        {
-                            direction = WEST;
-                        }
-                    }
-                    else
-                    {
-                        
-                        if (randomTurn < 0.5)
-                        {
-                            // turn right
-                            if (direction == WEST)
-                            {
-                                direction = NORTH;
-                            }
-                            else
-                            {
-                                direction++;
-                            }
-
-                        }
-                        else
-                        {
-                            //turn left
-                            if (direction == NORTH)
-                            {
-                                direction = WEST;
-                            }
-                            else
-                            {
-                                direction--;
-                            }
-                        }
-                    }
-
-                }
-                //else do nothing at 1 - MOVE_PROB - TURN_PROB
-            }
-        }
     }
 }

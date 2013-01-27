@@ -24,14 +24,19 @@ namespace WindowsGame1
         public Hunter(Game1 game, float x, float y)
             : base(game)
         {
-          
+
             stateWeights = new int[,] { { 4, IdleState }, { 10, MOVE }, { 10, MOVE_SHEEP }, { 7, TURN } };
             currentState = IdleState;
-            base.x =1000;
-            base.y = 200;
+            base.x =x;
+            base.y = y;
             this.DrawOrder = 1000;
-            random = new Random();
+            x += 500;
+            y += 500;
+            random = new Random((int)x);
             game.Components.Add(this);
+            xVel = (float)random.Next(0,5);
+            random = new Random((int)y);
+            yVel = (float)random.Next(0, 5);
             for (int i = 0; i < stateWeights.GetLength(0); i++)
             {
                 totalWeights += stateWeights[i,0];
@@ -40,13 +45,14 @@ namespace WindowsGame1
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             base.Update(gameTime);
+           
             if (!inChase)
             {
                 lastUpdate += gameTime.ElapsedGameTime.Milliseconds;
                 if (lastUpdate > changeStateTimer)
                 {
                     lastUpdate = 0;
-                    changeStateTimer = (random.Next(500));
+                    changeStateTimer = (random.Next(1000));
                     int randomState = random.Next(totalWeights);
                     int counter = 0;
                     for (int i = 0; i < stateWeights.GetLength(0); i++)
@@ -65,13 +71,13 @@ namespace WindowsGame1
                     }
                     else if (currentState == MOVE)
                     {
-                        xVel = ((float)random.Next(200) / 200-1);
-                        yVel = ((float)random.Next(200) / 200-1);
+                        xVel = ((float)random.Next(100) / 100*2-1);
+                        yVel = ((float)random.Next(100) / 100*2-1);
                     }
                     else if (currentState == MOVE_SHEEP)
                     {
-                        xVel = ((float)random.Next(200) / 200 - 1);
-                        yVel = ((float)random.Next(200) / 200 - 1);
+                        xVel = ((float)random.Next(100) / 100 * 2 - 1);
+                        yVel = ((float)random.Next(100) / 100 * 2 - 1);
                     }
                     else if (currentState == TURN)
                     {

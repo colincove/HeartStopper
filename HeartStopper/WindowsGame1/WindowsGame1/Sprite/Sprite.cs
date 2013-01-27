@@ -43,7 +43,7 @@ The Sprite class handles the swapping of animations and acts as incapsulation fo
         }
 		//called when an object desires its sprite to be drawn to the screen. 
         private Rectangle sourceRect;
-        public void drawSprite(SpriteEffects effects,Rectangle destinationRect, GameTime gameTime, float rotation)
+        public void drawSprite(SpriteEffects effects,Rectangle destinationRect, GameTime gameTime, float rotation, float scale)
         {
             //ElapsedGameTime is how long ago Draw was called. We add this elapse time up and see if we should animate a new frame. 
            currentFrameTime= currentFrameTime.Add(gameTime.ElapsedGameTime);
@@ -67,7 +67,7 @@ The Sprite class handles the swapping of animations and acts as incapsulation fo
             if (currentRect!=null)
             {
                 //do the actual drawing. 
-                batch.Draw(spriteSheet, destinationRect, sourceRect, Color.White, rotation, new Vector2(sourceRect.Width/2, sourceRect.Height/2), effects, 0.0F);
+                batch.Draw(spriteSheet, destinationRect, sourceRect, Color.White, rotation, new Vector2((sourceRect.Width / 2) * scale, (sourceRect.Height / 2) *scale), effects, 0.0F);
             }
         }
  //This method should be the only way to get access to Stream objects. Because stream objects have an association with the sheet used to create them, we should not 
