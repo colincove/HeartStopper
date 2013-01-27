@@ -55,7 +55,7 @@ namespace WindowsGame1
             // TODO: Add your initialization logic here
            
 
-            map = new Map(this, 21, 11);
+            map = new Map(this, 40, 40);
             base.Initialize();
         }
 
