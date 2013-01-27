@@ -124,7 +124,6 @@ namespace HeartStopper
             
             if (rec.X > 1) 
                 hit = false;
-
             base.Update(gameTime);
         }
         private void doMovement(GameTime gameTime)
