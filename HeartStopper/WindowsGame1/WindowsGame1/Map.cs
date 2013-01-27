@@ -20,8 +20,8 @@ namespace HeartStopper
     {
 
         public Tile[,] grid;
-        private int width;
-        private int height;
+        public int width;
+        public int height;
         private Game game;
 
         public Map(Game game, int width, int height)
@@ -85,5 +85,15 @@ namespace HeartStopper
 
             base.Update(gameTime);
         }
+        public int getWidth()
+        {
+            return width;
+        }
+        public int getheight()
+        {
+            return height;
+        }
     }
+    
+
 }
