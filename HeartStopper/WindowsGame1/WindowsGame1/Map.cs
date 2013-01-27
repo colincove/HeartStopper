@@ -130,7 +130,14 @@ namespace HeartStopper
 
             base.Update(gameTime);
         }
-
+        public int getWidth()
+        {
+            return width;
+        }
+        public int getheight()
+        {
+            return height;
+        }
         public Tile getTile(int x, int y)
         {
             if (x >= 0 && x < width && y >= 0 && y < height)
@@ -138,4 +145,6 @@ namespace HeartStopper
             return null;
         }
     }
+    
+
 }

@@ -25,12 +25,9 @@ namespace HeartStopper
             : base(game)
         {
             // TODO: Construct any child components here
-            DrawOrder = 5; // Always draw this first.
-            screenWidth = width;
-            screenHeight = height;
-            //this.game = game;
-            //this.id = id;
-            //this.elevation = elevation;
+            DrawOrder = 5; // Always draw this last.
+            screenWidth = width*Tile.TILE_SIZE;
+            screenHeight = height*Tile.TILE_SIZE;
             game.Components.Add(this);
         }
 
@@ -41,6 +38,8 @@ namespace HeartStopper
         public override void Initialize()
         {
             // TODO: Add your initialization code here
+
+            
             base.Initialize();
 
 
@@ -51,13 +50,13 @@ namespace HeartStopper
             base.LoadContent();
             //this.spriteBatch = new SpriteBatch(game.GraphicsDevice);
             // For now texture is coloured rectangle.
-
+            tex = Game.Content.Load<Texture2D>("Images/werewolf");
+            rec = new Rectangle(150, 200, 38, 50);
             //float g = ((float)elevation / (float)MAX_ELEVATION) * 255f;
             //dummyColor = new Color(0, (int)g, 0);
             //texture = new Texture2D(game.GraphicsDevice, 1, 1);
             //texture.SetData(new[] { dummyColor });
-            tex = Game.Content.Load<Texture2D>("Images/werewolf");
-            rec = new Rectangle(150, 200, 38, 50);
+            
 
         }
 
