@@ -9,33 +9,32 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using HeartStopper;
-using WindowsGame1;
 
-namespace HeartStopper
+namespace WindowsGame1
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Tile : Microsoft.Xna.Framework.DrawableGameComponent
+    public class VisionHighlight : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        public const int TILE_SIZE = 36; // pretzels
-        public const int MAX_ELEVATION = 10;
-
-        private Game game;
-        private int elevation;
+        Game game;
         private Texture2D texture;
-        private Vector2 id; // x,y index of location in grid.
-        private Color dummyColor;
+        private Color colour;
+        private int x; // Positions within the map grid.
+        private int y;
 
-        public Tile(Game game, Vector2 id, int elevation)
+        public bool drawIt; 
+
+        public VisionHighlight(Game game, int x, int y)
             : base(game)
         {
             // TODO: Construct any child components here
-            DrawOrder = 1; // Always draw this first.
+            DrawOrder = 6;
             this.game = game;
-            this.id = id;
-            this.elevation = elevation;
-            game.Components.Add(this);
+            this.x = x;
+            this.y = y;
+            this.drawIt = false;
+            this.game.Components.Add(this);
         }
 
         /// <summary>
@@ -45,22 +44,26 @@ namespace HeartStopper
         public override void Initialize()
         {
             // TODO: Add your initialization code here
-            base.Initialize();
 
-            
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
-            //this.spriteBatch = new SpriteBatch(game.GraphicsDevice);
-            // For now texture is coloured rectangle.
-
-            float g = ((float)elevation / (float)MAX_ELEVATION) * 255f;
-            dummyColor = new Color(0, (int) g, 0);
+            colour = new Color(200,200,200,100); // White Highlight
             texture = new Texture2D(game.GraphicsDevice, 1, 1);
-            texture.SetData(new[] { dummyColor });
-            
+            texture.SetData(new[] { colour });
+
+        }
+
+        protected override void UnloadContent()
+        {
+            base.UnloadContent();
+            Game1.spriteBatch.Dispose();
+            // If you are creating your texture (instead of loading it with
+            // Content.Load) then you must Dispose of it
+            texture.Dispose();
         }
 
         /// <summary>
@@ -76,28 +79,28 @@ namespace HeartStopper
 
         public override void Draw(GameTime gameTime)
         {
-
+            if (!drawIt)
+                return;
             base.Draw(gameTime);
+
+            
 
             Game1.spriteBatch.Begin();
 
-            int x = (int)id.X * TILE_SIZE;
-            int y = (int)id.Y * TILE_SIZE;
-            Game1.spriteBatch.Draw(texture, new Rectangle(x, y, TILE_SIZE, TILE_SIZE), Color.White);
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE), Color.White);
 
             Game1.spriteBatch.End();
         }
 
-
-        public void setElevation(int e)
+        public Vector2 getPosition()
         {
-            this.elevation = e;
+            return new Vector2(this.x, this.y);
         }
 
-        public int getElevation()
+        public void setPosition(Vector2 pos)
         {
-            return this.elevation;
+            this.x = (int) pos.X;
+            this.y = (int) pos.Y;
         }
-
     }
 }

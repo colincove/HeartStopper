@@ -20,18 +20,10 @@ namespace WindowsGame1
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
-        // Heart Stopper
-        Texture2D tex;
-        Rectangle rec;
-
-        // Screen Boundaries
-        int screenWidth;
-        int screenHeight;
-
-        float moveX, moveY;
-        
         public Map map;
+
         public Werewolf wW;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -52,11 +44,11 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            screenWidth = GraphicsDevice.Viewport.Width;
-            screenHeight = GraphicsDevice.Viewport.Height;
-            map = new Map(this, 21, 11);
+            map = new Map(this, 40, 40);
             wW = new Werewolf(this, map.getWidth(), map.getheight());
+            
             base.Initialize();
+            
         }
 
         /// <summary>
@@ -68,14 +60,7 @@ namespace WindowsGame1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            //tex = Content.Load<Texture2D>("Images/werewolf");
-            //rec = new Rectangle(150, 200, 38, 50);
             
-            //screenWidth = GraphicsDevice.Viewport.Width;
-            //screenHeight = GraphicsDevice.Viewport.Height;
-            
-            // generate map
             
         }
 
@@ -116,7 +101,7 @@ namespace WindowsGame1
 
             spriteBatch.Begin();
             //map = new Map(this, 21, 11);
-            //spriteBatch.Draw(tex, rec, Color.White);
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
