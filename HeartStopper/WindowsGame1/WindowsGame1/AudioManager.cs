@@ -25,20 +25,19 @@ namespace HeartStopper
         {
             
             cm = content;
-            baa = cm.Load<SoundEffect>("Audio\\sheepTest");
+            baa = cm.Load<SoundEffect>("Audio\\sheep_baa");
             notChasedSong = cm.Load<Song>("Audio\\The Forest and the Trees");
             chasedSong = cm.Load<Song>("Audio\\Action");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(notChasedSong);
         }
 
-        public void playSound(){
-            
+        public void soundBaa()
+        {
             SoundEffectInstance baaInstance = baa.CreateInstance();
             baaInstance.IsLooped = false;
             baaInstance.Play();
         }
-
         public void changeChased(){
             MediaPlayer.Play(chasedSong);   
         }

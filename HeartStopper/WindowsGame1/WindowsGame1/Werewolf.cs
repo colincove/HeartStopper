@@ -36,8 +36,8 @@ namespace HeartStopper
         {
             // TODO: Construct any child components here
             DrawOrder = 1000; // Always draw this last.
-            screenWidth = width*Tile.TILE_SIZE;
-            screenHeight = height*Tile.TILE_SIZE;
+            screenWidth = width*Map.TILE_SIZE;
+            screenHeight = height*Map.TILE_SIZE;
             game.Components.Add(this);
             skin = new PlayerSkin(game, this);
             this.x = 0;

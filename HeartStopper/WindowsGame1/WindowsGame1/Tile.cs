@@ -18,6 +18,7 @@ namespace HeartStopper
     /// </summary>
     public class Tile : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        
         public const int TILE_SIZE = 12; // pretzels
         public const int MAX_ELEVATION = 10;
 
@@ -103,6 +104,6 @@ namespace HeartStopper
         {
             return this.elevation;
         }
-
+        
     }
 }
