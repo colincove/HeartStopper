@@ -45,11 +45,11 @@ namespace WindowsGame1
         private int maxY;
 
         private Map map;
-        public Sheep(Game game, int startX, int startY, Map map)
+        public Sheep(Game1 game, int startX, int startY, Map map)
             : base(game)
         {
-            maxX = map.grid.GetLength(0);
-            maxY = map.grid.GetLength(1);
+            maxX = game.map.grid.GetLength(0);
+            maxY = game.map.grid.GetLength(1);
             x = startX;
             y = startY;
 
@@ -142,79 +142,99 @@ namespace WindowsGame1
                         && newY2 < maxY
                         && newY3 < maxY)
                     {
-                        int elevation1 = map.grid[newX1,newY1].getElevation();
+                        int elevation1 = map.grid[newX1, newY1].getElevation();
                         int elevation2 = map.grid[newX2, newY2].getElevation();
                         int elevation3 = map.grid[newX3, newY3].getElevation();
                         int currentElevation = map.grid[x, y].getElevation();
 
                         double randElevation = random.NextDouble();
                         bool foundTile = true;
-                        if(randElevation < UP_PROB){
-                            if(elevation1 > currentElevation){
+                        if (randElevation < UP_PROB)
+                        {
+                            if (elevation1 > currentElevation)
+                            {
                                 x = newX1;
                                 y = newY1;
                             }
-                            else if(elevation2 > currentElevation){
+                            else if (elevation2 > currentElevation)
+                            {
                                 x = newX2;
                                 y = newY2;
                             }
-                            else if(elevation3 > currentElevation){
+                            else if (elevation3 > currentElevation)
+                            {
                                 x = newX3;
                                 y = newY3;
                             }
-                            else{
+                            else
+                            {
                                 foundTile = false;
                             }
                         }
-                        else if(randElevation < UP_PROB + FLAT_PROB){
-                            if(elevation1 == currentElevation){
+                        else if (randElevation < UP_PROB + FLAT_PROB)
+                        {
+                            if (elevation1 == currentElevation)
+                            {
                                 x = newX1;
                                 y = newY1;
                             }
-                            if(elevation2 == currentElevation){
+                            if (elevation2 == currentElevation)
+                            {
                                 x = newX2;
                                 y = newY2;
                             }
-                            if(elevation3 == currentElevation){
+                            if (elevation3 == currentElevation)
+                            {
                                 x = newX3;
                                 y = newY3;
                             }
-                            else{
+                            else
+                            {
                                 foundTile = false;
                             }
                         }
-                        else{
-                            if(elevation1 < currentElevation){
+                        else
+                        {
+                            if (elevation1 < currentElevation)
+                            {
                                 x = newX1;
                                 y = newY1;
                             }
-                            else if(elevation2 < currentElevation){
+                            else if (elevation2 < currentElevation)
+                            {
                                 x = newX2;
                                 y = newY2;
                             }
-                            else if(elevation3 < currentElevation){
+                            else if (elevation3 < currentElevation)
+                            {
                                 x = newX3;
                                 y = newY3;
                             }
-                            else{
+                            else
+                            {
                                 foundTile = false;
                             }
                         }
-                        if(!foundTile){
+                        if (!foundTile)
+                        {
                             double randTile = random.NextDouble();
-                            if(randTile < 0.33){
+                            if (randTile < 0.33)
+                            {
                                 x = newX1;
                                 y = newY1;
                             }
-                            else if(randTile < 0.66){
+                            else if (randTile < 0.66)
+                            {
                                 x = newX2;
                                 y = newY2;
                             }
-                            else{
+                            else
+                            {
                                 x = newX3;
                                 y = newY3;
                             }
                         }
+                    }
                 }
                 else if (randomAction < MOVE_PROB + TURN_PROB)
                 {

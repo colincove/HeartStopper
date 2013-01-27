@@ -19,7 +19,7 @@ namespace HeartStopper
     public class Map : Microsoft.Xna.Framework.GameComponent
     {
 
-        private Tile[,] grid;
+        public Tile[,] grid;
         private int width;
         private int height;
         private Game game;

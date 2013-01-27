@@ -48,7 +48,7 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            map = new Map(this, 40, 40);
+            map = new Map(this, 60, 60);
             wW = new Werewolf(this, map.getWidth(), map.getheight());
             cam = new Camera(this, wW);
             temp = new DummyVision(this, 5, 5);
