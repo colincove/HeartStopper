@@ -207,26 +207,26 @@ namespace HeartStopper
             bool isRunning = false;
             bool hRun = false;
             bool vRun = false;
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
             {
                 velX -= .5f;
                 isRunning = true;
                 hRun = true;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
             {
                 velX += .5f;
                 isRunning = true;
                 hRun = true;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
             {
                 velY -= .5f;
                 isRunning = true;
                 vRun = true;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            if (Keyboard.GetState().IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
             {
                 velY += .5f;
                 isRunning = true;

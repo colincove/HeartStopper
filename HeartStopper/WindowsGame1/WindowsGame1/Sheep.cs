@@ -16,6 +16,12 @@ namespace WindowsGame1
 {
     public class Sheep : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        static DateTime startRumble;
+
+        private bool alive;
+        private bool alert;
+        private bool done;
+
         private int x;
         private int y;
 
@@ -55,6 +61,10 @@ namespace WindowsGame1
             x = startX;
             y = startY;
 
+            alive = true;
+            alert = false;
+            done = true; 
+
             this.map = map;
             game.Components.Add(this);
             lastUpdateTime = System.Environment.TickCount;
@@ -83,18 +93,53 @@ namespace WindowsGame1
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            if (!alive && !alert)
+            {
+                 
+                GamePad.SetVibration(PlayerIndex.One,1f,0f);
+                Console.WriteLine("1");
+                startRumble = DateTime.Now;
+                alert = true;
+                
+            }
+            TimeSpan timePassed = DateTime.Now - startRumble;
+            if (!alive && done && timePassed.TotalSeconds >= 0.25)
+            {
+                Console.WriteLine("2");
+                GamePad.SetVibration(PlayerIndex.One, 0f, .5f);
+
+                alive = false;
+                //done = false;
+            }
+            timePassed = DateTime.Now - startRumble;
+            if (!alive && done && timePassed.TotalSeconds >= 0.50)
+            {
+                Console.WriteLine("3");
+                GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+
+                alive = false;
+                done = false;
+            }
+
             base.Update(gameTime);
             updatePosition();
         }
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             base.Draw(gameTime);
-            Game1.spriteBatch.Draw(tex, new Rectangle((int)(x - ((Game1)Game).cam.X), (int)(y - ((Game1)Game).cam.Y), 38, 50), new Rectangle(0, 0, 38, 50), Color.White);
+            if(alive)
+            Game1.spriteBatch.Draw(tex, new Rectangle((int)(x - ((Game1)Game).cam.X), (int)(y - ((Game1)Game).cam.Y), 38, 50), Color.White);
+            
+            
         }
         protected override void LoadContent()
         {
             base.LoadContent();
             tex = Game.Content.Load<Texture2D>("Images/Sheepl");
+        }
+        public void isAlive(bool state)
+        {
+            alive = state;
         }
         private void updatePosition()
         {
