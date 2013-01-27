@@ -20,9 +20,18 @@ namespace WindowsGame1
         public float x;
         public float y;
 
+        public float xp;
+        public float yp;
+
+        public float angle;
+
         public DrawableSprite(Game game)
             : base(game)
         {
+            x = 0;
+            y = 0;
+            xp = 0;
+            yp = 0;
             // TODO: Construct any child components here
         }
 
@@ -44,8 +53,23 @@ namespace WindowsGame1
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
+            //angle = MathHelper.ToRadians((float)(Math.Atan2((double)yp - (double)y, (double)xp - (double)x) / (Math.PI / 180)) - 90f);
 
+            angle = VectorToAngle(new Vector2(x - xp, y - yp));
+            //Console.WriteLine(angle);
+            xp = x;
+            yp = y;
             base.Update(gameTime);
+        }
+
+        public Vector2 AngleToVector(float angle)
+        {
+            return new Vector2((float)Math.Sin(angle), -(float)Math.Cos(angle));
+        }
+
+        public float VectorToAngle(Vector2 vector)
+        {
+            return (float)Math.Atan2(vector.X, -vector.Y);
         }
     }
 }

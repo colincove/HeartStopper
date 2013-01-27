@@ -30,7 +30,7 @@ namespace WindowsGame1
             : base(game)
         {
             // TODO: Construct any child components here
-            DrawOrder = 6;
+            DrawOrder = 1000;
             this.game = game;
             this.x = x;
             this.y = y;
@@ -85,11 +85,9 @@ namespace WindowsGame1
                 return;
             base.Draw(gameTime);
 
-
-
             //Game1.spriteBatch.Begin();
 
-            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255, 255, 255, 0));
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255, 255, 255, 150));
 
             //Game1.spriteBatch.End();
         }

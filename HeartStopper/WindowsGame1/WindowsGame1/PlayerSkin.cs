@@ -92,8 +92,8 @@ namespace WindowsGame1
             // TODO: Add your update code here
 
             base.Update(gameTime);
-            destRect.X = (int)(wolf.X-((Game1)Game).cam.X)+Game1.VIEWPORT_WIDTH/2;
-            destRect.Y = (int)(wolf.Y-((Game1)Game).cam.Y)+Game1.VIEWPORT_HEIGHT/2;
+            destRect.X = (int)(wolf.X-((Game1)Game).cam.X);
+            destRect.Y = (int)(wolf.Y-((Game1)Game).cam.Y);
             angle = MathHelper.ToRadians((float)(Math.Atan2((double)oldY - (double)wolf.Y, (double)oldX - (double)wolf.X) / (Math.PI / 180))-90f);
             oldX = wolf.X;
             oldY = wolf.Y;

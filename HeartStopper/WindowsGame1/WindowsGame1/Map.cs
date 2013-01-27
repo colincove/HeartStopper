@@ -205,14 +205,18 @@ namespace HeartStopper
         {
             return height;
         }
-        /*
-        public Tile getTile(int x, int y)
+
+        public Vector2 getTile(float x, float y)
         {
-            if (x >= 0 && x < width && y >= 0 && y < height)
-                return grid[x, y];
-            return null;
+            if (x >= 0 && x < width * TILE_SIZE && y >= 0 && y < height * TILE_SIZE)
+            {
+                int i = (int) x / TILE_SIZE;
+                int j = (int) y / TILE_SIZE;
+                return new Vector2(i, j);
+            }
+
+            return new Vector2((int) -1, (int) -1);
         }
-        */
     }
     
 

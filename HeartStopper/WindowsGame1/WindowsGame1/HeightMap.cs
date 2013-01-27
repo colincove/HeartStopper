@@ -13,7 +13,7 @@ namespace WindowsGame1
         public const int MIN = 1;
 
         const float INIT_RAND = 40;
-        const float DELTA_RAND = 0.7f; // how much randomness changes per step.
+        const float DELTA_RAND = 0.65f; // how much randomness changes per step.
 
         private int[,] map;
         int size;
