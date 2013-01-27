@@ -23,12 +23,12 @@ namespace WindowsGame1
         const int DIR_UP = -1;
         const int DIR_DOWN = 1;
 
-        const int MAX_HIGHLIGHTS = 128;
+        const int MAX_HIGHLIGHTS = 1024;
         const int VISION_RANGE = 100; // Starting 'vision range' resource. Delta elevation of surrounding terrain tied to cost of seeing.
 
-        const int VCOST_EQUAL = VISION_RANGE / 10;
-        const int VCOST_DOWNHILL = VISION_RANGE / 20;
-        const int VCOST_UPHILL = VISION_RANGE / 2;
+        const int VCOST_EQUAL = VISION_RANGE / 30;
+        const int VCOST_DOWNHILL = VISION_RANGE / 80;
+        const int VCOST_UPHILL = VISION_RANGE / 6;
 
         Game1 game;
         int x;
@@ -63,7 +63,7 @@ namespace WindowsGame1
             highlights = new VisionHighlight[MAX_HIGHLIGHTS];
             for (int i = 0; i < MAX_HIGHLIGHTS; i++)
             {
-                highlights[i] = new VisionHighlight(this.game, this.x, this.y);
+                highlights[i] = new VisionHighlight(this.game, this.x, this.y, (int) (200 - (((float) i / (float) MAX_HIGHLIGHTS) * 600)));
             }
             base.Initialize();
 
