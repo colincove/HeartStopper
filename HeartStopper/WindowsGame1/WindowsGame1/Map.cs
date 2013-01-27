@@ -16,17 +16,21 @@ namespace HeartStopper
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Map : Microsoft.Xna.Framework.GameComponent
+    public class Map : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        public const int TILE_SIZE = 24; // pretzels
 
-        public Tile[,] grid;
+        //public Tile[,] grid;
+        public int[,] grid;
+        private Texture2D texture;
+        private Color[] colours;
         private int width;
         private int height;
-        private Game game;
+        private Game1 game;
 
         public static SpriteBatch spriteBatch; // For all the map info.
 
-        public Map(Game game, int width, int height)
+        public Map(Game1 game, int width, int height)
             : base(game)
             
         {
@@ -35,6 +39,16 @@ namespace HeartStopper
             this.width = width;
             this.height = height;
             this.game.Components.Add(this);
+            Hunter hunter = new Hunter(game,200f,200f);
+            Sheep sheep = new Sheep(game, 300, 300, this);
+           sheep = new Sheep(game, 300, 300, this);
+            sheep = new Sheep(game, 120, 300, this);
+            sheep = new Sheep(game, 300, 1300, this);
+             sheep = new Sheep(game, 20, 300, this);
+             sheep = new Sheep(game, 50, 1500, this);
+            sheep = new Sheep(game, 400, 300, this);
+            sheep = new Sheep(game, 2000, 50, this);
+             sheep = new Sheep(game, 100, 300, this);
         }
 
         /// <summary>
@@ -44,29 +58,22 @@ namespace HeartStopper
         public override void Initialize()
         {
             // TODO: Add your initialization code here
-
+           
             spriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
 
-            // Init the map in a dumb way for now.
-            grid = new Tile[width, height];
+            HeightMap hmap = new HeightMap(Game1.MAP_SIZE, 0);
 
+            
+            
+            // Init the map in a dumb way for now.
+            grid = new int[width, height];
+
+            /*
             int[,] elevationMap = new int[width, height];
 
             // ***** This hard-coded elevation map is 21x11 ******
             elevationMap = new int[,]
-            //  0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20
-          /*  { { 1, 2, 3, 3, 4, 4, 4, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 0
-              { 1, 2, 3, 4, 4, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 1
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 2
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 3
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 4
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 5
-              { 1, 2, 3, 4, 5, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 6
-              { 1, 2, 3, 4, 4, 5, 5, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 7
-              { 1, 2, 3, 3, 4, 4, 4, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 8
-              { 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 9
-              { 1, 1, 2, 2, 3, 3, 4, 4, 5, 6, 5, 4, 3, 4, 5, 6, 7, 8, 9, 8, 7}, // 10
-            }; */
+            
             {
                 {4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,5,4,3,3,3,3,3,3,4,4,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,7,7},
                 {4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,7,7,8,8,8,8,8,8,8,8,8,8,8,7,6,5,4,3,3,3,3,3,4,4,4,5,5,5,5,5,6,6,7,7,7,7,7,7,7,7,7,7},
@@ -129,15 +136,35 @@ namespace HeartStopper
                 {7,7,7,7,7,7,7,7,7,6,5,5,4,4,4,4,4,4,4,4,3,2,2,2,2,2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,5,5,4,4,4,4,3,3,4,4,4,4,4},
                 {7,7,7,7,7,7,7,7,7,7,6,5,5,4,4,4,4,4,4,3,3,2,2,2,2,2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,8,8,8,7,6,6,5,4,4,4,4,3,3,4,4,4,4,4}
             };
+            */
+            
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
-                    grid[i, j] = new Tile(game, new Vector2(i,j), elevationMap[j, i]);
+                    //grid[i, j] = new Tile(game, i, j, hmap.getHeight(i, j));
+                    grid[i, j] = hmap.getHeight(i, j);
                 }
             }
 
+            Console.WriteLine("map initialization complete.");
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+
+            texture = new Texture2D(game.GraphicsDevice, 1, 1);
+            texture.SetData(new[] { new Color(255,255,255) });
+            colours = new Color[HeightMap.MAX - HeightMap.MIN + 1];
+            for (int i = HeightMap.MIN; i <= HeightMap.MAX; i++)
+            {
+                float g = ((float)i / (float)HeightMap.MAX) * 255f;
+                colours[i - HeightMap.MIN] = new Color(0, (int)g, 0);
+            }
+
+            base.LoadContent();
+
         }
 
         /// <summary>
@@ -150,19 +177,45 @@ namespace HeartStopper
 
             base.Update(gameTime);
         }
+
+        public override void Draw(GameTime gameTime)
+        {
+
+            base.Draw(gameTime);
+
+            //Game1.spriteBatch.Begin();
+
+            int elevation;
+            for (int i = 0; i < this.width; i++) {
+                for (int j = 0; j < this.height; j++) {
+                    elevation = grid[i, j]; // index into colours[]
+                    Game1.spriteBatch.Draw(texture, new Rectangle(i * TILE_SIZE - (int)((Game1)Game).cam.X, j * TILE_SIZE - (int)((Game1)Game).cam.Y, TILE_SIZE, TILE_SIZE), colours[elevation - 1]);
+                }   
+            }
+            
+
+            //Game1.spriteBatch.End();
+        }
+
         public int getWidth()
         {
             return width;
         }
-        public int getheight()
+        public int getHeight()
         {
             return height;
         }
-        public Tile getTile(int x, int y)
+
+        public Vector2 getTile(float x, float y)
         {
-            if (x >= 0 && x < width && y >= 0 && y < height)
-                return grid[x, y];
-            return null;
+            if (x >= 0 && x < width * TILE_SIZE && y >= 0 && y < height * TILE_SIZE)
+            {
+                int i = (int) x / TILE_SIZE;
+                int j = (int) y / TILE_SIZE;
+                return new Vector2(i, j);
+            }
+
+            return new Vector2((int) -1, (int) -1);
         }
     }
     

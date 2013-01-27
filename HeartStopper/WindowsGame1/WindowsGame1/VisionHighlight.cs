@@ -24,13 +24,13 @@ namespace WindowsGame1
         private int y;
         private int id;
 
-        public bool drawIt; 
+        public bool drawIt;
 
         public VisionHighlight(Game game, int x, int y, int id)
             : base(game)
         {
             // TODO: Construct any child components here
-            DrawOrder = 6;
+            DrawOrder = 1000;
             this.game = game;
             this.x = x;
             this.y = y;
@@ -85,13 +85,11 @@ namespace WindowsGame1
                 return;
             base.Draw(gameTime);
 
-            
+            //Game1.spriteBatch.Begin();
 
-            Game1.spriteBatch.Begin();
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255, 255, 255, 150));
 
-            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255,255,255,0));
-
-            Game1.spriteBatch.End();
+            //Game1.spriteBatch.End();
         }
 
         public Vector2 getPosition()
@@ -101,8 +99,8 @@ namespace WindowsGame1
 
         public void setPosition(Vector2 pos)
         {
-            this.x = (int) pos.X;
-            this.y = (int) pos.Y;
+            this.x = (int)pos.X;
+            this.y = (int)pos.Y;
         }
     }
 }

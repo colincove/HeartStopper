@@ -54,19 +54,26 @@ namespace WindowsGame1
         public Rectangle rec;
 
         private Map map;
+        
+        private Texture2D tex;
+
         public Sheep(Game1 game, int startX, int startY, Map map)
             : base(game)
         {
+<<<<<<< HEAD
             DrawOrder = 5; // Always draw this first.
             //maxX = game.map.grid.GetLength(0);
             //maxY = game.map.grid.GetLength(1);
             maxX = map.getWidth() * Tile.TILE_SIZE;
             maxY = map.getheight() * Tile.TILE_SIZE;
+=======
+          
+>>>>>>> 3bb14d7757e72214648dbfe3777a6d88d7ef30c8
             x = startX;
             y = startY;
 
             this.map = map;
-            
+            game.Components.Add(this);
             lastUpdateTime = System.Environment.TickCount;
             random = new Random();
             double randomDirection = random.NextDouble() * 4;// get a random number between 1 and 4
@@ -93,6 +100,7 @@ namespace WindowsGame1
 
 
         }
+<<<<<<< HEAD
         protected override void LoadContent()
         {
             base.LoadContent();
@@ -108,6 +116,30 @@ namespace WindowsGame1
 
         }
         public override void Update(GameTime gameTime)
+=======
+        public override void Initialize()
+        {
+            base.Initialize();
+            maxX = ((Game1)Game).map.grid.GetLength(0);
+            maxY = ((Game1)Game).map.grid.GetLength(1);
+        }
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        {
+            base.Update(gameTime);
+            updatePosition();
+        }
+        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            Game1.spriteBatch.Draw(tex, new Rectangle((int)(x - ((Game1)Game).cam.X), (int)(y - ((Game1)Game).cam.Y), 38, 50), new Rectangle(0, 0, 38, 50), Color.White);
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            tex = Game.Content.Load<Texture2D>("Images/Sheepl");
+        }
+        private void updatePosition()
+>>>>>>> 3bb14d7757e72214648dbfe3777a6d88d7ef30c8
         {
 
             while (lastUpdateTime < System.Environment.TickCount)
@@ -175,10 +207,16 @@ namespace WindowsGame1
                         && newY2 < maxY
                         && newY3 < maxY)
                     {
+                        int elevation1 = map.grid[newX1, newY1];
+                        int elevation2 = map.grid[newX2, newY2];
+                        int elevation3 = map.grid[newX3, newY3];
+                        int currentElevation = map.grid[x, y];
+                        /*
                         int elevation1 = map.grid[newX1, newY1].getElevation();
                         int elevation2 = map.grid[newX2, newY2].getElevation();
                         int elevation3 = map.grid[newX3, newY3].getElevation();
                         int currentElevation = map.grid[x, y].getElevation();
+                        */
 
                         double randElevation = random.NextDouble();
                         bool foundTile = true;

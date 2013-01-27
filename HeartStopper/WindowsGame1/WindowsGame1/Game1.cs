@@ -25,10 +25,13 @@ namespace WindowsGame1
         public Werewolf wW;
         public Sheep sheep;
 
-        DummyVision temp;
+        //Vision temp;
         public Camera cam;
         public static int VIEWPORT_HEIGHT = 1080;
         public static int VIEWPORT_WIDTH = 1920;
+
+        public const int MAP_SIZE = 257; // must be 2^x + 1, where x is a positive integer
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -49,12 +52,17 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            map = new Map(this, 60, 60);
-            wW = new Werewolf(this, map.getWidth(), map.getheight());
+
+            map = new Map(this, MAP_SIZE, MAP_SIZE);
+            wW = new Werewolf(this, map.getWidth(), map.getHeight());
+
             sheep = new Sheep(this, 50, 50, map);
+
             cam = new Camera(this, wW);
-            temp = new DummyVision(this, 5, 5);
+            //temp = new Vision(this, 5, 5);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             base.Initialize();
+           
             
         }
 
@@ -64,8 +72,10 @@ namespace WindowsGame1
         /// </summary>
         protected override void LoadContent()
         {
+            base.LoadContent();
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+           
         }
 
         /// <summary>
@@ -104,10 +114,10 @@ namespace WindowsGame1
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-            //map = new Map(this, 21, 11);
 
-            spriteBatch.End();
+          
             base.Draw(gameTime);
+            spriteBatch.End();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace WindowsGame1.Animation
       This class acts as a wrapper for stream objects. It will delay the popRect of its stream object for as many frames as the delay is set.
       To create an animation made up of a variable number of delayed frame animations, you would create a StreamGroup filled with DelayedSpriteStream objects. 
      * */
-    class DelayedSpriteStream:SpriteStreamBase
+   public  class DelayedSpriteStream:SpriteStreamBase
     {
         //internal stream with which this class wraps around. 
         private SpriteStreamBase stream;

@@ -14,25 +14,35 @@ using WindowsGame1;
 
 namespace HeartStopper
 {
-    public class Werewolf : Microsoft.Xna.Framework.DrawableGameComponent
+    public class Werewolf : DrawableSprite
     {
-        public Texture2D tex;
-        public Rectangle rec;
-        float moveX, moveY, x, y;
+        float moveX, moveY;//, x, y;
+        private int oldDepth = 0;
+        private float depthFriction = 0.0f;
         private int screenWidth;
         private int screenHeight;
+
         static DateTime startRumble;
         bool run = true;
         bool hit = false;
 
-        public Werewolf(Game game, int width, int height)
+        Game1 game;
+        Vision vis;
+
+        private PlayerSkin skin;
+
+        public Werewolf(Game1 game, int width, int height)
             : base(game)
         {
             // TODO: Construct any child components here
-            DrawOrder = 5; // Always draw this last.
+            DrawOrder = 1000; // Always draw this last.
             screenWidth = width*Tile.TILE_SIZE;
             screenHeight = height*Tile.TILE_SIZE;
             game.Components.Add(this);
+            skin = new PlayerSkin(game, this);
+            this.x = 0;
+            this.y = 0;
+            this.game = game;
         }
 
         /// <summary>
@@ -43,6 +53,7 @@ namespace HeartStopper
         {
             // TODO: Add your initialization code here
 
+            vis = new Vision(game, this);
             
             base.Initialize();
 
@@ -52,17 +63,6 @@ namespace HeartStopper
         protected override void LoadContent()
         {
             base.LoadContent();
-            //this.spriteBatch = new SpriteBatch(game.GraphicsDevice);
-            // For now texture is coloured rectangle.
-            tex = Game.Content.Load<Texture2D>("Images/werewolf");
-            x = 150;
-            y = 200;
-            rec = new Rectangle((int)(x-((Game1)Game).cam.X), (int)(y-((Game1)Game).cam.Y), 38, 50);
-            
-            //float g = ((float)elevation / (float)MAX_ELEVATION) * 255f;
-            //dummyColor = new Color(0, (int)g, 0);
-            //texture = new Texture2D(game.GraphicsDevice, 1, 1);
-            //texture.SetData(new[] { dummyColor });
             
 
         }
@@ -75,12 +75,15 @@ namespace HeartStopper
         {
             // TODO: Add your update code here
 
-            Console.WriteLine(rec.X + tex.Width);
             //doMovement(gameTime);
-            doAccMovement(gameTime);
-
-
-            addRestrictions(gameTime);
+           // doAccMovement(gameTime);
+            Map map=((Game1)Game).map;
+            //int currentDepth = map.grid[(int)(x * Map.TILE_SIZE),(int)(y * Map.TILE_SIZE)];
+           // depthFriction += oldDepth - currentDepth;
+            //oldDepth = currentDepth;
+            doKeyAccMovement(gameTime);
+            //addRestrictions(gameTime);
+            //base.Update(gameTime);
 
         }
         private void addRestrictions(GameTime gameTime)
@@ -91,8 +94,9 @@ namespace HeartStopper
             //startRumble = DateTime.Now;
             // set boundaries
             //GamePad.SetVibration(PlayerIndex.One, 1, 1); // max vibration
+
             
-            if (rec.X <=0 && !hit)
+            if (x <=0 && !hit)
             {
                 //GamePad.SetVibration(PlayerIndex.One,0.3f,0.3f);
                 hit = true;
@@ -108,12 +112,10 @@ namespace HeartStopper
                 //GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
                  
             }
-            if (rec.X + tex.Width >= screenWidth)
-                rec.X = screenWidth - tex.Width;
-            if (rec.Y <= 0)
-                rec.Y = 0;
-            if (rec.Y + tex.Height >= screenHeight)
-                rec.Y = screenHeight - tex.Height;
+
+           
+
+
 
             /*if (hit&&run)
             {
@@ -131,28 +133,40 @@ namespace HeartStopper
                 Console.WriteLine("2");
                 GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
                 run = true;
-                rec.X = 0; 
+                //x = 0; 
             }
             
-            if (rec.X > 1) 
-                hit = false;
-
-            base.Update(gameTime);
+            //if (x > 1) 
+            //    hit = false;
         }
         private void doMovement(GameTime gameTime)
         {
+            bool isRunning = false;
             if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
                 moveX -= 10;
+                isRunning=true;
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
                 moveX += 10;
+                isRunning = true;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
                 moveY -= 10;
+                isRunning = true;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
                 moveY += 10;
-
-            moveX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 5;
-            moveY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 5;
-
+                isRunning = true;
+            }
+            
+            moveX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
+            moveY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
+            changeAnimation(isRunning);
             x = moveX;
             y = moveY;
             base.Update(gameTime);
@@ -162,30 +176,111 @@ namespace HeartStopper
         private void doAccMovement(GameTime gameTime)
         {
 
+            bool isRunning = false;
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X == 0.0)
             {
                 velX = velX / 1.3f;
+            }
+            else
+            {
+                isRunning = true;
             }
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y == 0.0)
             {
                 velY = velY / 1.3f;
             }
-            velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
+            else
+            {
+                isRunning = true;
+            }
+            changeAnimation(isRunning);
+           velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
             velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
+
+            x += velX;
+            y += velY;
+        }
+        private void doKeyAccMovement(GameTime gameTime)
+        {
+            bool isRunning = false;
+            bool hRun = false;
+            bool vRun = false;
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                velX -= .5f;
+                isRunning = true;
+                hRun = true;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                velX += .5f;
+                isRunning = true;
+                hRun = true;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                velY -= .5f;
+                isRunning = true;
+                vRun = true;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                velY += .5f;
+                isRunning = true;
+                vRun = true;
+            }
+
+            if (!vRun)
+            {
+                velY = velY / 1.2f;
+            }
+            else
+            {
+                velY = velY / 1.05f;
+            }
+            if (!hRun)
+            {
+                velX = velX / 1.2f;
+            }
+            else
+            {
+                velX = velX / 1.05f;
+            }
+            changeAnimation(isRunning);
+            // velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
+            // velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
 
             x += velX;
             y += velY;
             base.Update(gameTime);
         }
+        private void changeAnimation(bool isRunning)
+        {
+            if (isRunning)
+            {
+                if (Math.Abs(velX)  + Math.Abs(velY) <3)
+                {
+                    skin.sprite.updateStream(skin.walk);
+                }
+                else if (Math.Abs(velX) + Math.Abs(velY) < 6)
+                {
+                    skin.sprite.updateStream(skin.jog);
+                }
+                else 
+                {
+                    skin.sprite.updateStream(skin.run);
+                }
+            }
+            else
+            {
+                skin.sprite.updateStream(skin.idle);
+            }
+        }
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            rec.X = (int)(x-((Game1)Game).cam.X)+Game1.VIEWPORT_WIDTH/2;
-            rec.Y = (int)(y-((Game1)Game).cam.Y)+Game1.VIEWPORT_HEIGHT/2;
-            Game1.spriteBatch.Begin();
-            Game1.spriteBatch.Draw(tex, rec, Color.White);
-            Game1.spriteBatch.End();
         }
         public float X
         {
