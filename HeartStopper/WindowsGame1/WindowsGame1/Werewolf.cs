@@ -66,18 +66,9 @@ namespace HeartStopper
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-<<<<<<< HEAD
-=======
-
->>>>>>> MyBrokenBranch
-
             //doMovement(gameTime);
            // doAccMovement(gameTime);
             doKeyAccMovement(gameTime);
-<<<<<<< HEAD
-=======
-
->>>>>>> MyBrokenBranch
             addRestrictions(gameTime);
 
         }
@@ -89,17 +80,6 @@ namespace HeartStopper
             //startRumble = DateTime.Now;
             // set boundaries
             //GamePad.SetVibration(PlayerIndex.One, 1, 1); // max vibration
-<<<<<<< HEAD
-           /* if (rec.X <= 0)
-                rec.X = 0;
-            if (rec.X + tex.Width >= screenWidth)
-                rec.X = screenWidth - tex.Width;
-            if (rec.Y <= 0)
-                rec.Y = 0;
-            if (rec.Y + tex.Height >= screenHeight)
-                rec.Y = screenHeight - tex.Height;
-            */
-=======
 
             
             if (rec.X <=0 && !hit)
@@ -145,9 +125,6 @@ namespace HeartStopper
             if (rec.X > 1) 
                 hit = false;
 
-
-
->>>>>>> MyBrokenBranch
             base.Update(gameTime);
         }
         private void doMovement(GameTime gameTime)
@@ -208,13 +185,6 @@ namespace HeartStopper
             {
                 isRunning = true;
             }
-<<<<<<< HEAD
-            else
-            {
-                isRunning = true;
-            }
-=======
->>>>>>> MyBrokenBranch
             changeAnimation(isRunning);
            velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
             velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
@@ -303,12 +273,7 @@ namespace HeartStopper
 
         public override void Draw(GameTime gameTime)
         {
-<<<<<<< HEAD
             base.Draw(gameTime);
-            
-=======
-            base.Draw(gameTime);
->>>>>>> MyBrokenBranch
         }
         public float X
         {
