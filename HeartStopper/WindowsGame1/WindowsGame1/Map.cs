@@ -19,10 +19,12 @@ namespace HeartStopper
     public class Map : Microsoft.Xna.Framework.GameComponent
     {
 
-        public Tile[,] grid;
+        private Tile[,] grid;
         private int width;
         private int height;
         private Game game;
+
+        public static SpriteBatch spriteBatch; // For all the map info.
 
         public Map(Game game, int width, int height)
             : base(game)
@@ -43,7 +45,8 @@ namespace HeartStopper
         {
             // TODO: Add your initialization code here
 
-            base.Initialize();
+
+            spriteBatch = new SpriteBatch(Game1.graphics.GraphicsDevice);
 
             // Init the map in a dumb way for now.
             grid = new Tile[width, height];
@@ -73,6 +76,9 @@ namespace HeartStopper
                     grid[i, j] = new Tile(game, new Vector2(i,j), elevationMap[j, i]);
                 }
             }
+
+
+            base.Initialize();
         }
 
         /// <summary>
@@ -84,6 +90,13 @@ namespace HeartStopper
             // TODO: Add your update code here
 
             base.Update(gameTime);
+        }
+
+        public Tile getTile(int x, int y)
+        {
+            if (x >= 0 && x < width && y >= 0 && y < height)
+                return grid[x, y];
+            return null;
         }
     }
 }

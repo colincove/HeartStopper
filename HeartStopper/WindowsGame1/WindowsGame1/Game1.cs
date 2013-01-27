@@ -35,6 +35,8 @@ namespace WindowsGame1
 
         int mapX, mapY;
 
+        DummyVision temp;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -53,10 +55,11 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-           
 
             map = new Map(this, 21, 11);
+            temp = new DummyVision(this, 5, 5);
             base.Initialize();
+            
         }
 
         /// <summary>
@@ -146,7 +149,7 @@ namespace WindowsGame1
     
             rec.X = (int)moveX;
             rec.Y = (int)moveY;
-            Console.WriteLine(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X);
+            //Console.WriteLine(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X);
 
             // screen boundaries
             if (rec.X <= 0)
