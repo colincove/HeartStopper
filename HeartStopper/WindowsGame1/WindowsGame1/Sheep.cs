@@ -16,20 +16,25 @@ namespace WindowsGame1
 {
     public class Sheep : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        // axis 
         private int x;
         private int y;
 
+        //
         private const int MIN_MOVE_TIME = 1000;
         private const int MAX_MOVE_TIME = 5000;
 
+        // action probability
         private const double MOVE_PROB = 0.64;
         private const double TURN_PROB = 0.24;
         private const double IDLE_PROB = 0.16;
 
+        // target probability
         private const double UP_PROB = 0.16;
         private const double FLAT_PROB = 0.24;
         private const double DOWN_PROB = 0.6;
 
+        // coordinates
         private const int NORTH = 0;
         private const int EAST = 1;
         private const int SOUTH = 2;
@@ -44,12 +49,19 @@ namespace WindowsGame1
         private int maxX;
         private int maxY;
 
+        // respawn a sheep
+        public Texture2D tex;
+        public Rectangle rec;
+
         private Map map;
         public Sheep(Game1 game, int startX, int startY, Map map)
             : base(game)
         {
-            maxX = game.map.grid.GetLength(0);
-            maxY = game.map.grid.GetLength(1);
+            DrawOrder = 5; // Always draw this first.
+            //maxX = game.map.grid.GetLength(0);
+            //maxY = game.map.grid.GetLength(1);
+            maxX = map.getWidth() * Tile.TILE_SIZE;
+            maxY = map.getheight() * Tile.TILE_SIZE;
             x = startX;
             y = startY;
 
@@ -59,10 +71,11 @@ namespace WindowsGame1
             random = new Random();
             double randomDirection = random.NextDouble() * 4;// get a random number between 1 and 4
 
-            direction = (int)randomDirection; 
+            direction = (int)randomDirection;
+            game.Components.Add(this);
         }
 
-        public int getX()
+        /*public int getX()
         {
             updatePosition();
             return x;
@@ -72,9 +85,29 @@ namespace WindowsGame1
         {
             updatePosition();
             return y;
-        }
+        }*/
+        public override void Initialize()
+        {
+            // TODO: Add your initialization code here
+            base.Initialize();
 
-        private void updatePosition()
+
+        }
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+            //this.spriteBatch = new SpriteBatch(game.GraphicsDevice);
+            // For now texture is coloured rectangle.
+
+            //float g = ((float)elevation / (float)MAX_ELEVATION) * 255f;
+            //dummyColor = new Color(0, (int)g, 0);
+            //texture = new Texture2D(game.GraphicsDevice, 1, 1);
+            //texture.SetData(new[] { dummyColor });
+            tex = Game.Content.Load<Texture2D>("Images/sheep");
+            rec = new Rectangle(x, y, 50, 50);
+
+        }
+        public override void Update(GameTime gameTime)
         {
 
             while (lastUpdateTime < System.Environment.TickCount)
@@ -323,6 +356,17 @@ namespace WindowsGame1
                 }
                 //else do nothing at 1 - MOVE_PROB - TURN_PROB
             }
+            base.Update(gameTime);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            rec.X = (int)(x - ((Game1)Game).cam.X) + x*5 + Game1.VIEWPORT_WIDTH / 2;
+            rec.Y = (int)(y - ((Game1)Game).cam.Y) + y*5 + Game1.VIEWPORT_HEIGHT / 2;
+            Game1.spriteBatch.Begin();
+            Game1.spriteBatch.Draw(tex, rec, Color.White);
+            Game1.spriteBatch.End();
         }
     }
+    
 }

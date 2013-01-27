@@ -76,7 +76,8 @@ namespace HeartStopper
             // TODO: Add your update code here
 
             Console.WriteLine(rec.X + tex.Width);
-            doMovement(gameTime);
+            //doMovement(gameTime);
+            doAccMovement(gameTime);
 
 
             addRestrictions(gameTime);

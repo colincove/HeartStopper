@@ -23,6 +23,7 @@ namespace WindowsGame1
         public Map map;
 
         public Werewolf wW;
+        public Sheep sheep;
 
         DummyVision temp;
         public Camera cam;
@@ -50,6 +51,7 @@ namespace WindowsGame1
             // TODO: Add your initialization logic here
             map = new Map(this, 60, 60);
             wW = new Werewolf(this, map.getWidth(), map.getheight());
+            sheep = new Sheep(this, 50, 50, map);
             cam = new Camera(this, wW);
             temp = new DummyVision(this, 5, 5);
             base.Initialize();
