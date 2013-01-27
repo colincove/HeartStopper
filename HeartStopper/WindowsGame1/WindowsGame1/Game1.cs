@@ -24,6 +24,8 @@ namespace WindowsGame1
 
         public Werewolf wW;
 
+        DummyVision temp;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -46,7 +48,7 @@ namespace WindowsGame1
             // TODO: Add your initialization logic here
             map = new Map(this, 40, 40);
             wW = new Werewolf(this, map.getWidth(), map.getheight());
-            
+            temp = new DummyVision(this, 5, 5);
             base.Initialize();
             
         }
@@ -59,9 +61,6 @@ namespace WindowsGame1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            
-            
         }
 
         /// <summary>
