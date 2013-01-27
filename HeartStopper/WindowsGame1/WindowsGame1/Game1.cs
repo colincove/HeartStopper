@@ -55,8 +55,7 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            map = new Map(this, 21, 11);
+            map = new Map(this, 40, 40);
             temp = new DummyVision(this, 5, 5);
             base.Initialize();
             
@@ -134,16 +133,16 @@ namespace WindowsGame1
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
                 rec.Y += 10;
             */
-            //moveX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X)*(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 5;
-            //moveY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y)*(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 5;
+            moveX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X)*(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 5;
+            moveY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y)*(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 5;
 
-            moveX += (float)Math.Pow((GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X)*3,3);
-            moveY += (float)Math.Pow((GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y)*-3,3);
-            if(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y ==0 || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X == 0)
+            //moveX += (float)Math.Pow((GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X)*3,3);
+            //moveY += (float)Math.Pow((GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y)*-3,3);
+            /*if(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y ==0 || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X == 0)
                 velocity = 0;
             if(Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) > 0 || Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) > 0)
                 velocity++;
-
+            */
             //moveX += velocity*(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X);
             //moveY += velocity*(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y);
     
@@ -179,6 +178,7 @@ namespace WindowsGame1
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
+            //map = new Map(this, 21, 11);
             spriteBatch.Draw(tex, rec, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
