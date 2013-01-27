@@ -28,6 +28,16 @@ namespace HeartStopper
         private int height;
         private Game1 game;
 
+        Sheep sheep;
+        Sheep sheep1;
+        Sheep sheep2;
+        Sheep sheep3;
+        Sheep sheep4;
+        Sheep sheep5;
+        Sheep sheep6;
+        Sheep sheep7;
+        Sheep sheep8;
+
         public static SpriteBatch spriteBatch; // For all the map info.
 
         public Map(Game1 game, int width, int height)
@@ -60,6 +70,7 @@ namespace HeartStopper
             sheep = new Sheep(game, 400, 300);
             sheep = new Sheep(game, 2000, 50);
              sheep = new Sheep(game, 100, 300);
+
         }
 
         /// <summary>
@@ -185,7 +196,24 @@ namespace HeartStopper
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X-sheep.getX(), 2) + Math.Pow(game.wW.Y-sheep.getY(), 2))) < 50)
+                sheep.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep1.getX(), 2) + Math.Pow(game.wW.Y - sheep1.getY(), 2))) < 50)
+                sheep1.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep2.getX(), 2) + Math.Pow(game.wW.Y - sheep2.getY(), 2))) < 50)
+                sheep2.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep3.getX(), 2) + Math.Pow(game.wW.Y - sheep3.getY(), 2))) < 50)
+                sheep3.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep4.getX(), 2) + Math.Pow(game.wW.Y - sheep4.getY(), 2))) < 50)
+                sheep4.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep5.getX(), 2) + Math.Pow(game.wW.Y - sheep5.getY(), 2))) < 50)
+                sheep5.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep6.getX(), 2) + Math.Pow(game.wW.Y - sheep6.getY(), 2))) < 50)
+                sheep6.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep7.getX(), 2) + Math.Pow(game.wW.Y - sheep7.getY(), 2))) < 50)
+                sheep7.isAlive(false);
+            if (Math.Abs(Math.Sqrt(Math.Pow(game.wW.X - sheep8.getX(), 2) + Math.Pow(game.wW.Y - sheep8.getY(), 2))) < 50)
+                sheep8.isAlive(false);
             base.Update(gameTime);
         }
 

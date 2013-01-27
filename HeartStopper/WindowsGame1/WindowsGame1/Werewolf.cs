@@ -27,7 +27,8 @@ namespace HeartStopper
         bool hit = false;
 
         Game1 game;
-        Vision vis;
+        //Vision vis;
+        DeadlyVision vis;
 
         private PlayerSkin skin;
 
@@ -36,8 +37,8 @@ namespace HeartStopper
         {
             // TODO: Construct any child components here
             DrawOrder = 1000; // Always draw this last.
-            screenWidth = width*Tile.TILE_SIZE;
-            screenHeight = height*Tile.TILE_SIZE;
+            screenWidth = width*Map.TILE_SIZE;
+            screenHeight = height*Map.TILE_SIZE;
             game.Components.Add(this);
             skin = new PlayerSkin(game, this);
             this.x = 0;
@@ -54,7 +55,7 @@ namespace HeartStopper
             // TODO: Add your initialization code here
 
             //vis = new Vision(game, this);
-            
+            vis = new DeadlyVision(game, this);
             base.Initialize();
 
 
@@ -74,6 +75,7 @@ namespace HeartStopper
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
+
             //doMovement(gameTime);
            // doAccMovement(gameTime);
             Map map=((Game1)Game).map;
@@ -82,6 +84,7 @@ namespace HeartStopper
           //  oldDepth = currentDepth;
             doKeyAccMovement(gameTime);
             //addRestrictions(gameTime);
+
             base.Update(gameTime);
         }
         private void addRestrictions(GameTime gameTime)
@@ -203,26 +206,26 @@ namespace HeartStopper
             bool isRunning = false;
             bool hRun = false;
             bool vRun = false;
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
             {
                 velX -= .5f;
                 isRunning = true;
                 hRun = true;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
             {
                 velX += .5f;
                 isRunning = true;
                 hRun = true;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
             {
                 velY -= .5f;
                 isRunning = true;
                 vRun = true;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            if (Keyboard.GetState().IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
             {
                 velY += .5f;
                 isRunning = true;
