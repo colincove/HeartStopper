@@ -1,1 +1,2 @@
 D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1Content\obj\x86\Debug\ResolveAssemblyReference.cache

@@ -6,3 +6,11 @@ D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\Windows
 D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\XUI.pdb
 D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
 D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.exe
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.pdb
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\XUI.pdb
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb
+C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\werewolf.xnb
