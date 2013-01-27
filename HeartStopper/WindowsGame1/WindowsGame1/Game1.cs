@@ -56,7 +56,7 @@ namespace WindowsGame1
             map = new Map(this, MAP_SIZE, MAP_SIZE);
             wW = new Werewolf(this, map.getWidth(), map.getHeight());
 
-            sheep = new Sheep(this, 50, 50, map);
+            //sheep = new Sheep(this, 50, 50, map);
 
             cam = new Camera(this, wW);
             //temp = new Vision(this, 5, 5);
