@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using HeartStopper;
 
 namespace WindowsGame1
 {
@@ -16,8 +17,8 @@ namespace WindowsGame1
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public static GraphicsDeviceManager graphics;
+        public static SpriteBatch spriteBatch;
 
         // Heart Stopper
         Texture2D tex;
@@ -29,12 +30,17 @@ namespace WindowsGame1
 
         float moveX, moveY;
         float velocity;
+        
+        public Map map;
 
         int mapX, mapY;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            // View window resolution.
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
             Content.RootDirectory = "Content";
         }
 
@@ -49,6 +55,7 @@ namespace WindowsGame1
             // TODO: Add your initialization logic here
            
 
+            map = new Map(this, 21, 11);
             base.Initialize();
         }
 
