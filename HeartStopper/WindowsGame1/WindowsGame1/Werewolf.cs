@@ -67,7 +67,7 @@ namespace HeartStopper
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            Console.WriteLine(rec.X + tex.Width);
+            //Console.WriteLine(rec.X + tex.Width);
             doAccMovement(gameTime);
             addRestrictions(gameTime);
 

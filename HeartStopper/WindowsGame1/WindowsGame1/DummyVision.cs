@@ -23,14 +23,13 @@ namespace WindowsGame1
         const int DIR_UP = -1;
         const int DIR_DOWN = 1;
 
-        const int MAX_HIGHLIGHTS = 81;
+        const int MAX_HIGHLIGHTS = 128;
         const int VISION_RANGE = 100; // Starting 'vision range' resource. Delta elevation of surrounding terrain tied to cost of seeing.
 
-        const int VCOST_EQUAL = VISION_RANGE / 5;
-        const int VCOST_DOWNHILL = VISION_RANGE / 10;
+        const int VCOST_EQUAL = VISION_RANGE / 10;
+        const int VCOST_DOWNHILL = VISION_RANGE / 20;
         const int VCOST_UPHILL = VISION_RANGE / 2;
 
-        //VisionHighlight temp;
         Game1 game;
         int x;
         int y;
@@ -109,18 +108,12 @@ namespace WindowsGame1
 
             updateHighlights();
 
-            //this.game.Components.Remove(temp);
-            //temp = new VisionHighlight(game, x, y);
-
             oldState = newState;
             base.Update(gameTime);
         }
 
         private void updateHighlights()
         {
-            //highlights[0].setPosition(new Vector2(this.x, this.y));
-            //highlights[0].drawIt = true;
-
             // Turn all highlights off.
             highlightIndex = 0;
             while (highlights[highlightIndex].drawIt)
@@ -130,27 +123,28 @@ namespace WindowsGame1
             }
             highlightIndex = 0;
 
-            castVisionCone(x, y, dirLR, dirUD, VISION_RANGE);
-
-            //castVisionLine(x, y, dirLR, dirUD, VISION_RANGE);
+            castVisionCone(x, y, dirLR, dirUD, VISION_RANGE, 1);
         }
 
-        private void castVisionCone(int x, int y, int dx, int dy, int total)
+        private void castVisionCone(int x, int y, int dx, int dy, int total, int quota)
         {
             if (highlightIndex >= MAX_HIGHLIGHTS)
-                return;
-            if (dx != 0 && dy != 0)
                 return;
 
             if (dx == 0)
             {
-                castVisionLine(x, y, 1, 0, total);
-                castVisionLine(x, y, -1, 0, total);
+                castVisionLine(x, y, 1, 0, total, quota);
+                castVisionLine(x, y, -1, 0, total, quota);
             }
             else if (dy == 0)
             {
-                castVisionLine(x, y, 0, 1, total);
-                castVisionLine(x, y, 0, -1, total);
+                castVisionLine(x, y, 0, 1, total, quota);
+                castVisionLine(x, y, 0, -1, total, quota);
+            }
+            else
+            { // Moving in a diagonal.
+                castVisionLine(x, y, -dx, 0, total, quota);
+                castVisionLine(x, y, 0, -dy, total, quota);
             }
 
             Tile cTile = game.map.getTile(x, y);
@@ -169,6 +163,8 @@ namespace WindowsGame1
             else
                 return; // Shouldn't happen...
 
+            quota++;
+
             if (total >= 0)
             {
                 VisionHighlight hl = highlights[highlightIndex];
@@ -176,13 +172,13 @@ namespace WindowsGame1
                 hl.setPosition(new Vector2(x + dx, y + dy));
                 highlightIndex++;
 
-                castVisionCone(x + dx, y + dy, dx, dy, total);
+                castVisionCone(x + dx, y + dy, dx, dy, total, quota);
             }
         }
 
-        private void castVisionLine(int x, int y, int dx, int dy, int total)
+        private void castVisionLine(int x, int y, int dx, int dy, int total, int quota)
         {
-            if (highlightIndex >= MAX_HIGHLIGHTS)
+            if (highlightIndex >= MAX_HIGHLIGHTS || quota <= 0)
                 return;
 
             Tile cTile = game.map.getTile(x, y);
@@ -207,7 +203,8 @@ namespace WindowsGame1
                 hl.drawIt = true;
                 hl.setPosition(new Vector2(x + dx, y + dy));
                 highlightIndex++;
-                castVisionLine(x + dx, y + dy, dx, dy, total);
+                quota--;
+                castVisionLine(x + dx, y + dy, dx, dy, total, quota);
             }
         }
     }
