@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace WindowsGame1.Animation
 {
-    class LinearSprite:Sprite
+    public class LinearSprite:Sprite
     {
         //if the entire sprite sheet only uses a single size for all frames, then store that value so we dont have to enter it in multiple times.
         private Rectangle spriteRect;

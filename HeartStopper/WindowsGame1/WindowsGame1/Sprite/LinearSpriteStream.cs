@@ -10,7 +10,7 @@ namespace WindowsGame1.Animation
 /*
 Is a loopable sprite that should move its source rectangle from left to right, dropping down a line when it hits the edge of its bouding box, until it finish's all its frames. 
 */
-    class LinearSpriteStream : LoopableSpriteStream
+    public class LinearSpriteStream : LoopableSpriteStream
     {
 	//represents the top right location of the first frame of animation. 
         protected Vector2 origin;
@@ -19,7 +19,7 @@ Is a loopable sprite that should move its source rectangle from left to right, d
         protected Rectangle spriteSheetBounds,spriteRect;
 		//these variables will help speed up the process of calculating the current frame of animation. 
         private int col, row,topRow;
-
+        private int jaggedNum;
         public LinearSpriteStream(int totalFrames, Rectangle spriteSheetBounds, Rectangle spriteRect, Vector2 origin, Boolean doesLoop)
                :base(totalFrames, doesLoop)
         {
@@ -28,6 +28,7 @@ Is a loopable sprite that should move its source rectangle from left to right, d
             this.spriteSheetBounds = spriteSheetBounds;
             col = spriteSheetBounds.Width / spriteRect.Width;
             row = spriteSheetBounds.Height / spriteRect.Height;
+            jaggedNum = (int)((origin.X - spriteSheetBounds.X) / spriteRect.Width)-1;
         }
         public LinearSpriteStream(int totalFrames, Rectangle spriteSheetBounds, Rectangle spriteRect, Vector2 origin)
             : this(totalFrames, spriteSheetBounds, spriteRect,origin, false)
@@ -38,22 +39,38 @@ Is a loopable sprite that should move its source rectangle from left to right, d
         public override Rectangle popRect()
         {
             Rectangle returnRect;
-            if (frame > col)
+            /*if (frame >= col)
             {
                 rectX = frame % col;
+                Console.WriteLine("1");
             }
             else
             {
+                Console.WriteLine("2");
                 rectX = col-(col - frame);
                 xOffset = (int)origin.X;
-            }
-            returnRect = new Rectangle(spriteRect.Width*(rectX-1)+xOffset,
+            }*/
+            if (frame-1 >jaggedNum)
+             {
+                 rectX = (((frame)-jaggedNum) % col+1)-col;
+                 Console.WriteLine("1");
+                 xOffset = 0;
+             }
+             else
+             {
+                 Console.WriteLine("2");
+                 rectX = frame - 2;
+                 xOffset = (int)origin.X;
+             }
+           
+            returnRect = new Rectangle(spriteRect.Width*(rectX)+xOffset,
                 spriteRect.Height*((int)((frame-1)/col))+spriteSheetBounds.Y,
                 spriteRect.Width,
                 spriteRect.Height
                 );
-
+ Console.WriteLine("X: "+returnRect.X+" xOffset: "+xOffset+" rectX: "+rectX+" frame: "+frame+" col: "+col+" jag: "+jaggedNum);
            base.popRect();
+          
             return returnRect;
 
         }
