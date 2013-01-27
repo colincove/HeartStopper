@@ -24,7 +24,7 @@ namespace WindowsGame1
 
         public Werewolf wW;
 
-        DummyVision temp;
+        //Vision temp;
         public Camera cam;
         public static int VIEWPORT_HEIGHT = 1080;
         public static int VIEWPORT_WIDTH = 1920;
@@ -54,7 +54,7 @@ namespace WindowsGame1
             map = new Map(this, MAP_SIZE, MAP_SIZE);
             wW = new Werewolf(this, map.getWidth(), map.getHeight());
             cam = new Camera(this, wW);
-            temp = new DummyVision(this, 5, 5);
+            //temp = new Vision(this, 5, 5);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             base.Initialize();
            

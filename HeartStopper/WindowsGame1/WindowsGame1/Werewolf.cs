@@ -14,9 +14,9 @@ using WindowsGame1;
 
 namespace HeartStopper
 {
-    public class Werewolf : Microsoft.Xna.Framework.DrawableGameComponent
+    public class Werewolf : DrawableSprite
     {
-        float moveX, moveY, x, y;
+        float moveX, moveY;//, x, y;
         private int screenWidth;
         private int screenHeight;
 
@@ -24,10 +24,12 @@ namespace HeartStopper
         bool run = true;
         bool hit = false;
 
+        Game1 game;
+        Vision vis;
 
         private PlayerSkin skin;
 
-        public Werewolf(Game game, int width, int height)
+        public Werewolf(Game1 game, int width, int height)
             : base(game)
         {
             // TODO: Construct any child components here
@@ -36,6 +38,7 @@ namespace HeartStopper
             screenHeight = height*Tile.TILE_SIZE;
             game.Components.Add(this);
             skin = new PlayerSkin(game, this);
+            this.game = game;
         }
 
         /// <summary>
@@ -46,6 +49,7 @@ namespace HeartStopper
         {
             // TODO: Add your initialization code here
 
+            vis = new Vision(game, this);
             
             base.Initialize();
 
@@ -82,7 +86,7 @@ namespace HeartStopper
             //GamePad.SetVibration(PlayerIndex.One, 1, 1); // max vibration
 
             
-            if (rec.X <=0 && !hit)
+            if (x <=0 && !hit)
             {
                 //GamePad.SetVibration(PlayerIndex.One,0.3f,0.3f);
                 hit = true;
@@ -119,10 +123,10 @@ namespace HeartStopper
                 Console.WriteLine("2");
                 GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
                 run = true;
-                rec.X = 0; 
+                x = 0; 
             }
             
-            if (rec.X > 1) 
+            if (x > 1) 
                 hit = false;
             base.Update(gameTime);
         }
@@ -167,10 +171,6 @@ namespace HeartStopper
             if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X == 0.0)
             {
                 velX = velX / 1.3f;
-            }
-            else
-            {
-                isRunning = true;
             }
             else
             {

@@ -22,10 +22,11 @@ namespace WindowsGame1
         private Color colour;
         private int x; // Positions within the map grid.
         private int y;
+        private int id;
 
-        public bool drawIt; 
+        public bool drawIt;
 
-        public VisionHighlight(Game game, int x, int y)
+        public VisionHighlight(Game game, int x, int y, int id)
             : base(game)
         {
             // TODO: Construct any child components here
@@ -33,6 +34,7 @@ namespace WindowsGame1
             this.game = game;
             this.x = x;
             this.y = y;
+            this.id = id;
             this.drawIt = false;
             this.game.Components.Add(this);
         }
@@ -51,7 +53,7 @@ namespace WindowsGame1
         protected override void LoadContent()
         {
             base.LoadContent();
-            colour = new Color(200,200,200,100); // White Highlight
+            colour = new Color(id, id, id, id); // White Highlight
             texture = new Texture2D(game.GraphicsDevice, 1, 1);
             texture.SetData(new[] { colour });
 
@@ -83,10 +85,13 @@ namespace WindowsGame1
                 return;
             base.Draw(gameTime);
 
-   
 
-            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), Color.White);
 
+            //Game1.spriteBatch.Begin();
+
+            Game1.spriteBatch.Draw(texture, new Rectangle(x * Tile.TILE_SIZE - (int)((Game1)Game).cam.X, y * Tile.TILE_SIZE - (int)((Game1)Game).cam.Y, Tile.TILE_SIZE, Tile.TILE_SIZE), new Color(255, 255, 255, 0));
+
+            //Game1.spriteBatch.End();
         }
 
         public Vector2 getPosition()
@@ -96,8 +101,8 @@ namespace WindowsGame1
 
         public void setPosition(Vector2 pos)
         {
-            this.x = (int) pos.X;
-            this.y = (int) pos.Y;
+            this.x = (int)pos.X;
+            this.y = (int)pos.Y;
         }
     }
 }

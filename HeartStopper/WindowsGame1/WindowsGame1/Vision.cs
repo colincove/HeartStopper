@@ -15,7 +15,7 @@ namespace WindowsGame1
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class DummyVision : Microsoft.Xna.Framework.GameComponent
+    public class Vision : Microsoft.Xna.Framework.GameComponent
     {
         const int DIR_NONE = 0;
         const int DIR_LEFT = -1;
@@ -24,15 +24,15 @@ namespace WindowsGame1
         const int DIR_DOWN = 1;
 
         const int MAX_HIGHLIGHTS = 1024;
-        const int VISION_RANGE = 100; // Starting 'vision range' resource. Delta elevation of surrounding terrain tied to cost of seeing.
+        const int VISION_RANGE = 1024; // Starting 'vision range' resource. Delta elevation of surrounding terrain tied to cost of seeing.
 
         const int VCOST_EQUAL = VISION_RANGE / 30;
         const int VCOST_DOWNHILL = VISION_RANGE / 80;
-        const int VCOST_UPHILL = VISION_RANGE / 6;
+        const int VCOST_UPHILL = VISION_RANGE / 5;
 
         Game1 game;
-        int x;
-        int y;
+        DrawableSprite parent;
+
         int dirLR; // Left/right direction
         int dirUD; // up/down direction
         KeyboardState oldState;
@@ -40,13 +40,12 @@ namespace WindowsGame1
         VisionHighlight[] highlights;
         private int highlightIndex;
 
-        public DummyVision(Game1 game, int x, int y)
+        public Vision(Game1 game, DrawableSprite parent)
             : base(game)
         {
             // TODO: Construct any child components here
             this.game = game;
-            this.x = x;
-            this.y = y;
+            this.parent = parent;
             this.dirLR = DIR_NONE;
             this.dirUD = DIR_NONE;
             this.game.Components.Add(this);
@@ -63,7 +62,7 @@ namespace WindowsGame1
             highlights = new VisionHighlight[MAX_HIGHLIGHTS];
             for (int i = 0; i < MAX_HIGHLIGHTS; i++)
             {
-                highlights[i] = new VisionHighlight(this.game, this.x, this.y, (int) (200 - (((float) i / (float) MAX_HIGHLIGHTS) * 600)));
+                highlights[i] = new VisionHighlight(this.game, 0, 0, (int) (200 - (((float) i / (float) MAX_HIGHLIGHTS) * 600)));
             }
             base.Initialize();
 
@@ -74,7 +73,8 @@ namespace WindowsGame1
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
-        {   
+        {
+            /*
             KeyboardState newState = Keyboard.GetState();
 
             if (oldState != null)
@@ -105,10 +105,10 @@ namespace WindowsGame1
                     this.dirLR = DIR_NONE;
                 }
             }
-
+            */
             updateHighlights();
 
-            oldState = newState;
+            //oldState = newState;
             base.Update(gameTime);
         }
 
@@ -123,7 +123,7 @@ namespace WindowsGame1
             }
             highlightIndex = 0;
 
-            castVisionCone(x, y, dirLR, dirUD, VISION_RANGE, 1);
+            castVisionCone((int) parent.x, (int) parent.y, dirLR, dirUD, VISION_RANGE, 1);
         }
 
         private void castVisionCone(int x, int y, int dx, int dy, int total, int quota)
