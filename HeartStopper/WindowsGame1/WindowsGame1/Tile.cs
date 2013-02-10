@@ -20,6 +20,7 @@ namespace HeartStopper
     {
         
         public const int TILE_SIZE = 12; // pretzels
+        public const int TILE_SIZE_2 = 24; // pretzels
         public const int MAX_ELEVATION = 10;
 
         private Game game;

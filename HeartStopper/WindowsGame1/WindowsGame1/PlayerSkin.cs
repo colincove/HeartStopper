@@ -50,7 +50,7 @@ namespace WindowsGame1
         public override void Draw(GameTime gameTime)
         {
 
-            Console.WriteLine(wolf.x);
+      
             base.Draw(gameTime);
             Map map=((Game1)Game).map;
             int x = (int)(wolf.x / (float)24);

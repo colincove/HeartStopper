@@ -53,22 +53,21 @@ Is a loopable sprite that should move its source rectangle from left to right, d
             if (frame-1 >jaggedNum)
              {
                  rectX = (((frame)-jaggedNum) % col+1)-col;
-                 Console.WriteLine("1");
+              
                  xOffset = 0;
              }
              else
              {
-                 Console.WriteLine("2");
+             
                  rectX = frame - 2;
                  xOffset = (int)origin.X;
              }
-           
-            returnRect = new Rectangle(spriteRect.Width*(rectX)+xOffset,
-                spriteRect.Height*((int)((frame-1)/col))+spriteSheetBounds.Y,
+
+            returnRect = new Rectangle(spriteRect.Width * (rectX) + xOffset,
+                spriteRect.Height * ((int)((frame - 1) / col)) + spriteSheetBounds.Y,
                 spriteRect.Width,
                 spriteRect.Height
                 );
- Console.WriteLine("X: "+returnRect.X+" xOffset: "+xOffset+" rectX: "+rectX+" frame: "+frame+" col: "+col+" jag: "+jaggedNum);
            base.popRect();
           
             return returnRect;

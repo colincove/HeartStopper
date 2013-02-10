@@ -32,6 +32,8 @@ namespace WindowsGame1
 
         public const int MAP_SIZE = 129; // must be 2^x + 1, where x is a positive integer
 
+        private HealthBar hb;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,6 +63,8 @@ namespace WindowsGame1
             cam = new Camera(this, wW);
             //temp = new Vision(this, 5, 5);
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            //hb = new HealthBar(this, 0, 0);
             base.Initialize();
            
             

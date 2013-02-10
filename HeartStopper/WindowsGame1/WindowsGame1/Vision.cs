@@ -150,7 +150,7 @@ namespace WindowsGame1
         {
             if (x >= Game1.MAP_SIZE || y >= Game1.MAP_SIZE || x < 0 || y < 0)
             {
-                Console.WriteLine(x + " " + y);
+            
                 return;
             }
             if (highlightIndex >= MAX_HIGHLIGHTS)

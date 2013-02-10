@@ -7,7 +7,7 @@ namespace WindowsGame1
 {
     
 
-    class HeightMap
+    public class HeightMap
     {
         public const int MAX = 20;
         public const int MIN = 1;
@@ -55,7 +55,7 @@ namespace WindowsGame1
             if (step < 2)
                 return;
 
-            Console.WriteLine(step);
+       
             double sum;
             for (int i = 0; i < size - 1; i += step)
             {
@@ -189,6 +189,7 @@ namespace WindowsGame1
 
         public int getHeight(int x, int y)
         {
+            if (x < 0 || x >= size || y < 0 || y >= size) return 0;
             return map[y, x];
         }
     }

@@ -14,11 +14,9 @@ using WindowsGame1;
 
 namespace HeartStopper
 {
-    public class Werewolf : DrawableSprite
+    public class Werewolf : DepthComponent
     {
         float moveX, moveY;//, x, y;
-        private int oldDepth = 0;
-        private float depthFriction = 0.0f;
         private int screenWidth;
         private int screenHeight;
 
@@ -27,22 +25,23 @@ namespace HeartStopper
         bool hit = false;
 
         Game1 game;
-        //Vision vis;
-        DeadlyVision vis;
+        Vision vis;
+       // DeadlyVision vis;
 
         private PlayerSkin skin;
-
+       
         public Werewolf(Game1 game, int width, int height)
             : base(game)
         {
+           
             // TODO: Construct any child components here
             DrawOrder = 1000; // Always draw this last.
             screenWidth = width*Map.TILE_SIZE;
             screenHeight = height*Map.TILE_SIZE;
             game.Components.Add(this);
             skin = new PlayerSkin(game, this);
-            this.x = 0;
-            this.y = 0;
+            this.x = 1000;
+            this.y = 1000;
             this.game = game;
         }
 
@@ -54,8 +53,8 @@ namespace HeartStopper
         {
             // TODO: Add your initialization code here
 
-            //vis = new Vision(game, this);
-            vis = new DeadlyVision(game, this);
+        //    vis = new Vision(game, this);
+            //vis = new DeadlyVision(game, this);
             base.Initialize();
 
 
@@ -84,9 +83,10 @@ namespace HeartStopper
           //  oldDepth = currentDepth;
             doKeyAccMovement(gameTime);
             //addRestrictions(gameTime);
-
+           
             base.Update(gameTime);
         }
+       
         private void addRestrictions(GameTime gameTime)
         {
             
@@ -105,7 +105,6 @@ namespace HeartStopper
                 //Thread.Sleep(milliseconds);
                 if (hit&&run)
                 {
-                    Console.WriteLine("1");
                     GamePad.SetVibration(PlayerIndex.One, 1f, 1f);
                     startRumble = DateTime.Now;
                     run = false;
@@ -131,7 +130,7 @@ namespace HeartStopper
             if (!run && timePassed.TotalSeconds >= 1.0)
             {
                 //hit = false;
-                Console.WriteLine("2");
+           
                 GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
                 run = true;
                 //x = 0; 
@@ -172,8 +171,7 @@ namespace HeartStopper
             y = moveY;
             base.Update(gameTime);
         }
-        private float velX = 0.0f;
-        private float velY = 0.0f;
+      
         private void doAccMovement(GameTime gameTime)
         {
 
@@ -195,11 +193,10 @@ namespace HeartStopper
                 isRunning = true;
             }
             changeAnimation(isRunning);
-           velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
-            velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
+           velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) /2;
+            velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) /2;
 
-            x += velX;
-            y += velY;
+            
         }
         private void doKeyAccMovement(GameTime gameTime)
         {
@@ -252,19 +249,17 @@ namespace HeartStopper
             // velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
             // velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
 
-            x += velX;
-            y += velY;
             base.Update(gameTime);
         }
         private void changeAnimation(bool isRunning)
         {
             if (isRunning)
             {
-                if (Math.Abs(velX)  + Math.Abs(velY) <3)
+                if (Math.Abs(velX)  + Math.Abs(velY) <10)
                 {
                     skin.sprite.updateStream(skin.walk);
                 }
-                else if (Math.Abs(velX) + Math.Abs(velY) < 6)
+                else if (Math.Abs(velX) + Math.Abs(velY) < 20)
                 {
                     skin.sprite.updateStream(skin.jog);
                 }
@@ -283,14 +278,7 @@ namespace HeartStopper
         {
             base.Draw(gameTime);
         }
-        public float X
-        {
-            get { return x; }
-        }
-        public float Y
-        {
-            get { return y; }
-        }
+
       
     }
 }

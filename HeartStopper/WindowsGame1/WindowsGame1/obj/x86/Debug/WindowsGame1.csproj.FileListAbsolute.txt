@@ -14,3 +14,16 @@ C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\Window
 C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
 C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb
 C:\Users\Angelico\Documents\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\werewolf.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\werewolf.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\WolfSprite.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Audio\Action.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Audio\sheepTest.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Audio\The Forest and the Trees.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Audio\Action.wma
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Audio\sheepTest.wma
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Audio\The Forest and the Trees.wma
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\Sheepl.xnb
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.exe.manifest
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.application
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe.manifest
+D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.application

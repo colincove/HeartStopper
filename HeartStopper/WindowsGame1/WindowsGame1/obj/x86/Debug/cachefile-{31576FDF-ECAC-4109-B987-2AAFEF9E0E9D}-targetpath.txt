@@ -1,1 +1,9 @@
 Content\Images\werewolf.xnb
+Content\Images\WolfSprite.xnb
+Content\Audio\Action.xnb
+Content\Audio\Action.wma
+Content\Audio\sheepTest.xnb
+Content\Audio\sheepTest.wma
+Content\Audio\The Forest and the Trees.xnb
+Content\Audio\The Forest and the Trees.wma
+Content\Images\Sheepl.xnb

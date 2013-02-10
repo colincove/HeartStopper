@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using HeartStopper;
+using Microsoft.Xna.Framework.Input;
 
 namespace WindowsGame1
 {
@@ -20,7 +22,7 @@ namespace WindowsGame1
         public static float prevPosXAvg = 0.0f;
         public static float prevPosYAvg = 0.0f;
         private static int updateCount = 0;
-        public int sheepListCount = 0;
+        public static int sheepListCount = 0;
         private int index = 0;
 
         static DateTime startRumble;
@@ -29,8 +31,6 @@ namespace WindowsGame1
         private bool alert;
         private bool done;
 
-        private int x;
-        private int y;
 
         private const int MIN_MOVE_TIME = 1000;
         private const int MAX_MOVE_TIME = 5000;
@@ -63,7 +63,7 @@ namespace WindowsGame1
         private Texture2D tex;
         private double changeStateTimer = 0;
         private double lastUpdate = 0;
-        private Random random;
+ 
         //states
         private int IdleState = 0, MOVE = 1, MOVE_SHEEP = 2, TURN = 3, FLOCK = 4;
         //4 indices match with the four states. 
@@ -75,7 +75,7 @@ namespace WindowsGame1
         public Sheep(Game1 game, float x, float y)
             : base(game)
         {
-
+             
             // Add to the sheep list 
             sheep[sheepListCount] = this;
             index = sheepListCount;
@@ -86,46 +86,60 @@ namespace WindowsGame1
             base.x = x;
             base.y = y;
             this.DrawOrder = 1000;
-            x += 500;
-            y += 500;
-            random = new Random((int)x);
+            Random random = new Random((int)x);
             game.Components.Add(this);
             xVel = (float)random.Next(0, 5);
             random = new Random((int)y);
             yVel = (float)random.Next(0, 5);
-            Console.WriteLine("X: " + xVel + " y: " + yVel);
+
             for (int i = 0; i < stateWeights.GetLength(0); i++)
             {
                 totalWeights += stateWeights[i, 0];
             }
-
-
-            x = startX;
-            y = startY;
-
             alive = true;
             alert = false;
             done = true; 
 
             this.map = map;
-            game.Components.Add(this);
+            
             lastUpdateTime = System.Environment.TickCount;
             random = new Random();
             double randomDirection = random.NextDouble() * 4;// get a random number between 1 and 4
 
             direction = (int)randomDirection;
+         
         }
-
+        public void runAway(){
+           
+            float angle = (float)Math.Atan2(y - ((Game1)Game).wW.y, x - ((Game1)Game).wW.x);
+            xVel += (float)Math.Cos(angle - 1)*(float)1.1;
+            yVel += (float)Math.Sin(angle - 1)*(float)1.1;
+            if (xVel > 5)
+            {
+                xVel = 5;
+            }
+            if (xVel <- 5)
+            {
+                xVel = -5;
+            }
+            if (yVel > 5)
+            {
+                yVel = 5;
+            }
+            if (yVel < -5)
+            {
+                yVel = -5;
+            }
+        }
         public int getX()
         {
-            updatePosition();
-            return x;
+            return (int)base.x;
         }
 
         public int getY()
         {
-            updatePosition();
-            return y;
+
+            return (int)base.y;
         }
         public override void Initialize()
         {
@@ -133,11 +147,15 @@ namespace WindowsGame1
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            xVel = xVel / 1.001f;
+            yVel = yVel / 1.001f;
+            x += (int)xVel;
+            y += (int)yVel;
             if (!alive && !alert)
             {
                  
                 GamePad.SetVibration(PlayerIndex.One,1f,0f);
-                Console.WriteLine("1");
+       
                 startRumble = DateTime.Now;
                 alert = true;
                 
@@ -145,7 +163,7 @@ namespace WindowsGame1
             TimeSpan timePassed = DateTime.Now - startRumble;
             if (!alive && done && timePassed.TotalSeconds >= 0.25)
             {
-                Console.WriteLine("2");
+      
                 GamePad.SetVibration(PlayerIndex.One, 0f, .5f);
 
                 alive = false;
@@ -154,7 +172,7 @@ namespace WindowsGame1
             timePassed = DateTime.Now - startRumble;
             if (!alive && done && timePassed.TotalSeconds >= 0.50)
             {
-                Console.WriteLine("3");
+               
                 GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
 
                 alive = false;
@@ -163,7 +181,6 @@ namespace WindowsGame1
 
             base.Update(gameTime);
 
-            updatePosition();
         }
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
@@ -195,16 +212,6 @@ namespace WindowsGame1
         private void doTurnState()
         {
         }
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-            base.Draw(gameTime);
-            Game1.spriteBatch.Draw(tex, new Rectangle((int)(x - ((Game1)Game).cam.X), (int)(y - ((Game1)Game).cam.Y), 38, 50), new Rectangle(0, 0, 38, 50), Color.White);
-        }
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-            tex = Game.Content.Load<Texture2D>("Images/werewolf");
-        }
-
+    
     }
 }
