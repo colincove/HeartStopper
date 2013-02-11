@@ -14,7 +14,7 @@ using WindowsGame1;
 
 namespace HeartStopper
 {
-    public class Werewolf : DepthComponent
+    public class Werewolf : SlopedComponent
     {
         float moveX, moveY;//, x, y;
         private int screenWidth;
@@ -43,6 +43,7 @@ namespace HeartStopper
             this.x = 1000;
             this.y = 1000;
             this.game = game;
+            this.damp = 10.0f;
         }
 
         /// <summary>
@@ -193,8 +194,9 @@ namespace HeartStopper
                 isRunning = true;
             }
             changeAnimation(isRunning);
-           velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) /2;
-            velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) /2;
+          
+           velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) /Math.Abs(slope.xForce);
+            velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) /Math.Abs(slope.yForce);;
 
             
         }
@@ -203,28 +205,30 @@ namespace HeartStopper
             bool isRunning = false;
             bool hRun = false;
             bool vRun = false;
+            float speed = .5f;
+            
             if (Keyboard.GetState().IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
             {
-                velX -= .5f;
+                velX -= speed;
                 isRunning = true;
                 hRun = true;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
             {
-                velX += .5f;
+                velX += speed;
                 isRunning = true;
                 hRun = true;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
             {
-                velY -= .5f;
+                velY -= speed;
                 isRunning = true;
                 vRun = true;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
             {
-                velY += .5f;
+                velY += speed;
                 isRunning = true;
                 vRun = true;
             }
@@ -249,6 +253,8 @@ namespace HeartStopper
             // velX += Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X) * 1;
             // velY -= Math.Abs(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y) * 1;
 
+           // velX = velX / (1 + Math.Abs(slope.xForce));
+            //velY = velY / (1 + Math.Abs(slope.yForce));
             base.Update(gameTime);
         }
         private void changeAnimation(bool isRunning)

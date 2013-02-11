@@ -93,14 +93,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WindowsGame1.exe" size="52224">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WindowsGame1.exe" size="53248">
       <assemblyIdentity name="WindowsGame1" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>xNGKQr/8n//KSsNcJYNqo49hr88=</dsig:DigestValue>
+        <dsig:DigestValue>/J8dSahDGKdiGeD5iIeFCIuXvGg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -168,6 +168,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>m8MMa+RPvEXJNTzy+rw8de4JtVE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\Images\Ball.xnb" size="5371">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>AsJalNpfqR6duGfpOYrUf56c9I8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Images\Sheepl.xnb" size="5371">

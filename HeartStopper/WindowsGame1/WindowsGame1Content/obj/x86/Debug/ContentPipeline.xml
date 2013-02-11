@@ -58,6 +58,15 @@
       <Output>D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\Sheepl.xnb</Output>
       <Time>2013-01-27T15:10:16.7734368-08:00</Time>
     </Item>
+    <Item>
+      <Source>Images\Ball.png</Source>
+      <Name>Images\Ball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Work\Documents\Projects\GitHub\HeartStopper\HeartStopper\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Images\Ball.xnb</Output>
+      <Time>2013-02-10T16:27:20.3228876-08:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>

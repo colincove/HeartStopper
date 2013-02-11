@@ -148,6 +148,7 @@
     <Compile Include="Screens\PlayerIndexEventArgs.cs" />
     <Compile Include="Sheep.cs" />
     <Compile Include="Slope.cs" />
+    <Compile Include="SlopedComponent.cs" />
     <Compile Include="Sprite\DelayedSpriteStream.cs" />
     <Compile Include="Sprite\ExplicitSpriteStream.cs" />
     <Compile Include="Sprite\LinearSprite.cs" />
